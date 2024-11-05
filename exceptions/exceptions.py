@@ -9,3 +9,6 @@ class InvalidDateFormatException(Exception):
 
 class InvalidDateValueException(Exception):
     pass
+
+class PhoneNumberException(Exception):
+    pass
