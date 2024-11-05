@@ -4,7 +4,7 @@ from assistant.record import Record
 def show_contacts(addressbook: AddressBook):
     pass
 
-def add_contact(args, book):
+def add_contact(args, addressbook):
     name, phone_number, *_ = args
 
     if len(args) < 2:
