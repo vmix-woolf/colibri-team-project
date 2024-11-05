@@ -1,4 +1,5 @@
 from assistant.addressbook import AddressBook
+from assistant.name import Name
 from assistant.phone import Phone
 from assistant.record import Record
 from decorators.decorate import input_error
@@ -21,8 +22,9 @@ def add_contact(args, book: AddressBook):
         raise ValueError
     name, phone_number, *_ = args
 
-    record = book.find_record(name)
-    if len(name) > 20 or name[0].isdigit():
+    if Name.name_validation(name):
+        record = book.find_record(name)
+    else:
         raise InvalidNameException()
 
     if record is None:
