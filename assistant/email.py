@@ -1,4 +1,4 @@
-from field import Field
+from assistant.field import Field
 
 
 class Email(Field):

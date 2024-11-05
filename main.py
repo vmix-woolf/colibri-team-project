@@ -3,10 +3,13 @@ from handlers.handler import (
     add_contact,
     change_contact,
     remove_phone,
-    show_contacts
+    show_contacts,
+    edit_phone,
+    add_phone
 )
 from assistant.addressbook import AddressBook
 from messages.constants import Constants
+from exceptions.exceptions import PhoneNumberException
 
 def main():
     book = AddressBook()
@@ -25,8 +28,28 @@ def main():
             print(add_contact(args, book))
         elif command == "change":
             print(change_contact(args, book))
+        elif command == "add-phone":
+            try:
+                print(add_phone(args, book))
+            except PhoneNumberException as e:
+                print(f"Error: {e}")
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
         elif command == "remove-phone":
-            print(remove_phone(args, book))
+            try:
+                print(remove_phone(args, book))
+            except PhoneNumberException as e:
+                print(f"Error: {e}")
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
+            
+        elif command == "edit-phone":
+            try:
+                print(edit_phone(args, book))
+            except PhoneNumberException as e:
+                print(f"Error: {e}")
+            except Exception as e:
+                print(f"An unexpected error occurred: {e}")
         elif command == "all":
             show_contacts(book)
         else:
