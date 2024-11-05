@@ -3,10 +3,10 @@ from collections import UserDict
 class AddressBook(UserDict):
 
     def add_record(self, contact):
-        pass
+        self.data[contact.name.value] = contact
 
     def find_record(self, contact_name):
-        pass
+        return self.data.get(contact_name)
 
     def remove_record(self, contact_name):
         pass
