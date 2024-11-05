@@ -12,3 +12,6 @@ class InvalidDateValueException(Exception):
 
 class PhoneNumberException(Exception):
     pass
+
+class ContactAlreadyExistsException(Exception):
+    pass

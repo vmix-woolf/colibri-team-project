@@ -10,6 +10,7 @@ class Constants(Enum):
     CONTACT_ADDED = "Contact is added."
     CONTACT_UPDATED = "Contact is updated."
     CONTACT_DELETED = "Contact is deleted."
+    CONTACT_ALREADY_EXISTS = "Contact is already exists."
     PHONE_ADDED = "Phone is added."
     PHONE_UPDATED = "Phone is updated."
     EMAIL_ADDED = "Email is added."

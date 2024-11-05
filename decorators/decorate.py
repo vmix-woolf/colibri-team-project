@@ -3,7 +3,7 @@ from exceptions.exceptions import (
     InvalidNameException,
     EmailNotValidException,
     InvalidDateFormatException,
-    InvalidDateValueException
+    InvalidDateValueException, ContactAlreadyExistsException
 )
 def input_error(func):
     def inner(*args, **kwargs):
@@ -19,5 +19,7 @@ def input_error(func):
             return Constants.INVALID_FORMAT_ERROR.value
         except InvalidDateValueException:
             return Constants.INVALID_DATE_VALUE_ERROR.value
+        except ContactAlreadyExistsException:
+            return Constants.CONTACT_ALREADY_EXISTS.value
 
     return inner

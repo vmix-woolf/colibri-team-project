@@ -1,5 +1,9 @@
 from assistant.addressbook import AddressBook
+from assistant.name import Name
+from assistant.phone import Phone
+from assistant.record import Record
 from decorators.decorate import input_error
+from exceptions.exceptions import PhoneNumberException, ContactAlreadyExistsException, InvalidNameException
 from messages.constants import Constants
 
 
@@ -11,11 +15,29 @@ def show_contacts(addressbook: AddressBook):
         for _, contact in addressbook.items():
             print(contact)
 
-def add_contact(args, addressbook):
-    name, phone_number, *_ = args
 
+@input_error
+def add_contact(args, book: AddressBook):
     if len(args) < 2:
         raise ValueError
+    name, phone_number, *_ = args
+
+    if Name.name_validation(name):
+        record = book.find_record(name)
+    else:
+        raise InvalidNameException()
+
+    if record is None:
+        if Phone.phone_number_validation(phone_number):
+            record = Record(name)
+            record.add_phone(phone_number)
+            book.add_record(record)
+
+            return Constants.CONTACT_ADDED.value
+        else:
+            raise PhoneNumberException()
+    else:
+        raise ContactAlreadyExistsException()
 
 def change_contact(args, addressbook: AddressBook):
     pass
