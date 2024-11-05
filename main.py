@@ -30,7 +30,7 @@ def main():
         elif command == "all":
             show_contacts(book)
         else:
-            print("Invalid command.")
+            print(Constants.INVALID_COMMAND_ERROR.value)
 
 
 if __name__ == "__main__":
