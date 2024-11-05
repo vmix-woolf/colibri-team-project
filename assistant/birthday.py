@@ -1,7 +1,7 @@
 import re
 import calendar
 
-from field import Field
+from assistant.field import Field
 from exceptions.exceptions import (
     InvalidDateFormatException,
     InvalidDateValueException

@@ -1,5 +1,5 @@
 from messages.constants import Constants
-from field import Field
+from assistant.field import Field
 
 
 class Phone(Field):

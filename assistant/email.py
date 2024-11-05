@@ -1,6 +1,6 @@
 import re
 
-from field import Field
+from assistant.field import Field
 from exceptions.exceptions import (
     EmailNotValidException
 )

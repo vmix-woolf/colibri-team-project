@@ -1,6 +1,6 @@
 import re
 
-from field import Field
+from assistant.field import Field
 
 class Name(Field):
 
