@@ -1,4 +1,6 @@
 from handlers.parser import parse_input
+from storage.keeper import save_data, load_data
+from messages.constants import Constants
 from handlers.handler import (
     add_contact,
     change_contact,
@@ -7,9 +9,6 @@ from handlers.handler import (
     edit_phone,
     add_phone
 )
-from storage.keeper import save_data, load_data
-from messages.constants import Constants
-from exceptions.exceptions import PhoneNumberException
 
 def main():
     book = load_data()
@@ -30,27 +29,11 @@ def main():
         elif command == "change":
             print(change_contact(args, book))
         elif command == "add-phone":
-            try:
-                print(add_phone(args, book))
-            except PhoneNumberException as e:
-                print(f"Error: {e}")
-            except Exception as e:
-                print(f"An unexpected error occurred: {e}")
+            print(add_phone(args, book))
         elif command == "remove-phone":
-            try:
-                print(remove_phone(args, book))
-            except PhoneNumberException as e:
-                print(f"Error: {e}")
-            except Exception as e:
-                print(f"An unexpected error occurred: {e}")
-            
+            print(remove_phone(args, book))
         elif command == "edit-phone":
-            try:
-                print(edit_phone(args, book))
-            except PhoneNumberException as e:
-                print(f"Error: {e}")
-            except Exception as e:
-                print(f"An unexpected error occurred: {e}")
+            print(edit_phone(args, book))
         elif command == "all":
             show_contacts(book)
         else:

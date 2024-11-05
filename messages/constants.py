@@ -10,6 +10,8 @@ class Constants(Enum):
     CONTACT_ADDED = "Contact is added."
     CONTACT_UPDATED = "Contact is updated."
     CONTACT_DELETED = "Contact is deleted."
+    PHONE_ADDED = "Phone is added."
+    PHONE_UPDATED = "Phone is updated."
     EMAIL_ADDED = "Email is added."
     EMAIL_UPDATED = "Email is updated."
     BIRTHDAY_ADDED = "Birthday is added."
@@ -21,6 +23,7 @@ class Constants(Enum):
     # related to contacts
     NAME_IS_NOT_VALID = "Name is not valid."
     NO_CONTACTS = "There are still no contacts."
+    NO_SUCH_CONTACT = "No such contact in the address book."
     # related to emails
     EMAIL_IS_NOT_VALID = "Email is not valid."
     # related to the birthday
