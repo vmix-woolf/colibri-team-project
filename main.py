@@ -13,7 +13,7 @@ from exceptions.exceptions import PhoneNumberException
 
 def main():
     book = load_data()
-    print(f"{Constants.WELCOME_MESSAGE.value}")
+    print(Constants.WELCOME_MESSAGE.value)
 
     while True:
         user_input = input("Enter a command: ")
@@ -55,7 +55,6 @@ def main():
             show_contacts(book)
         else:
             print(Constants.INVALID_COMMAND_ERROR.value)
-
 
 
 if __name__ == "__main__":

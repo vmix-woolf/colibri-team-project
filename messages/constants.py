@@ -18,8 +18,9 @@ class Constants(Enum):
     NOTE_ADDED = "Note is added."
     # related to errors
     VALUE_ERROR = "Enter the correct argument value."
-    # related to contacts' names
+    # related to contacts
     NAME_IS_NOT_VALID = "Name is not valid."
+    NO_CONTACTS = "There are still no contacts."
     # related to emails
     EMAIL_IS_NOT_VALID = "Email is not valid."
     # related to the birthday
