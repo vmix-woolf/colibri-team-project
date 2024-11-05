@@ -10,8 +10,8 @@ def add_contact(args, addressbook):
     if len(args) < 2:
         raise ValueError
 
-def change_contact(addressbook: AddressBook):
+def change_contact(args, addressbook: AddressBook):
     pass
 
-def remove_phone(addressbook: AddressBook):
+def remove_phone(args, addressbook: AddressBook):
     pass
