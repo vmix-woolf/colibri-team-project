@@ -5,11 +5,11 @@ from handlers.handler import (
     remove_phone,
     show_contacts
 )
-from assistant.addressbook import AddressBook
+from storage.keeper import save_data, load_data
 from messages.constants import Constants
 
 def main():
-    book = AddressBook()
+    book = load_data()
     print(f"{Constants.WELCOME_MESSAGE.value}")
 
     while True:
@@ -17,6 +17,7 @@ def main():
         command, *args = parse_input(user_input)
 
         if command in ["close", "exit", "quit"]:
+            save_data(book)
             print("Good bye!")
             break
         elif command == "hello":
@@ -31,6 +32,7 @@ def main():
             show_contacts(book)
         else:
             print(Constants.INVALID_COMMAND_ERROR.value)
+
 
 
 if __name__ == "__main__":
