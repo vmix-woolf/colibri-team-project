@@ -6,16 +6,9 @@ def show_contacts(addressbook: AddressBook):
 
 def add_contact(args, book):
     name, phone_number, *_ = args
-    record = book.find_record(name)
-    message = "Contact updated."
-    if record is None:
-        record = Record(name)
-        book.add_record(record)
-        message = "Contact added."
-    if phone_number:
-        record.add_phone(phone_number)
-    #save_data(book)
-    return message
+
+    if len(args) < 2:
+        raise ValueError
 
 def change_contact(args, addressbook: AddressBook):
     pass
