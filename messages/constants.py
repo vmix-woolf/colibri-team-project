@@ -16,3 +16,12 @@ class Constants(Enum):
     BIRTHDAY_UPDATED = "Birthday is updated."
     ADDRESS_ADDED = "Address is added."
     NOTE_ADDED = "Note is added."
+    # related to errors
+    VALUE_ERROR = "Enter the correct argument value."
+    # related to contacts' names
+    NAME_IS_NOT_VALID = "Name is not valid."
+    # related to emails
+    EMAIL_IS_NOT_VALID = "Email is not valid."
+    # related to the birthday
+    INVALID_FORMAT_ERROR = "Invalid date format. Use DD.MM.YYYY"
+    INVALID_DATE_VALUE_ERROR = "Invalid date value. Use correct date."
