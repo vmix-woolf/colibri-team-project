@@ -11,4 +11,4 @@ class Name(Field):
 
     @staticmethod
     def name_validation(name):
-        return True if bool(re.match(r'[A-Za-z]{2,20}', name)) else False
+        return True if bool(re.match(r'^[A-Za-z]{2,20}$', name)) else False
