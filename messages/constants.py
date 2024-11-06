@@ -26,6 +26,8 @@ class Constants(Enum):
     NO_SUCH_CONTACT = "No such contact in the address book."
     # related to emails
     EMAIL_IS_NOT_VALID = "Email is not valid."
+    # related to phone
+    PHONE_BELONGS_TO_CONTACT = "This phone number already belongs to this contact."
     # related to the birthday
     INVALID_FORMAT_ERROR = "Invalid date format. Use DD.MM.YYYY"
     INVALID_DATE_VALUE_ERROR = "Invalid date value. Use correct date."

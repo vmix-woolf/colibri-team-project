@@ -3,7 +3,8 @@ from exceptions.exceptions import (
     InvalidNameException,
     EmailNotValidException,
     InvalidDateFormatException,
-    InvalidDateValueException
+    InvalidDateValueException,
+    PhoneIsAlreadyBelongingException
 )
 def input_error(func):
     def inner(*args, **kwargs):
@@ -19,5 +20,7 @@ def input_error(func):
             return Constants.INVALID_FORMAT_ERROR.value
         except InvalidDateValueException:
             return Constants.INVALID_DATE_VALUE_ERROR.value
+        except PhoneIsAlreadyBelongingException:
+            return Constants.PHONE_BELONGS_TO_CONTACT.value
 
     return inner
