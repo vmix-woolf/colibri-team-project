@@ -15,3 +15,9 @@ class PhoneNumberException(Exception):
 
 class PhoneIsAlreadyBelongingException(Exception):
     pass
+
+class NoSuchContactException(Exception):
+    pass
+
+class ContactHasBirthdayException(Exception):
+    pass
