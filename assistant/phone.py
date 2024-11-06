@@ -11,4 +11,4 @@ class Phone(Field):
 
     @staticmethod
     def phone_number_validation(phone_number):
-        return phone_number.isdigit() and len(phone_number) == Constants.NUMBER_OF_DIGITS_IN_PHONE_NUMBER.value
+        return True if phone_number.isdigit() and len(phone_number) == Constants.NUMBER_OF_DIGITS_IN_PHONE_NUMBER.value else False

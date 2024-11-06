@@ -14,8 +14,8 @@ class Record:
         self.email = None
         self.birthday = None
 
-    def add_phone(self, phone):
-        self.phones.append(Phone(phone))
+    def add_phone(self, phone_number):
+        self.phones.append(phone_number)
 
     def remove_phone(self, phone):
         # TODO: нужно разобраться с валидацией такого метода у нас нет
@@ -36,3 +36,17 @@ class Record:
                 phone_obj.value = new_phone
                 return True
         return False
+
+    def __str__(self):
+        basic_message = f"Contact name: {self.name.value}, phones: {'; '.join(p for p in self.phones)}"
+
+        if self.email is not None:
+            basic_message += f", email: {self.email}"
+
+        if self.birthday is not None:
+            basic_message += f", birthday: {self.birthday}"
+
+        if len(self.address) != 0:
+            basic_message += f", address: (city: {self.address['city']}; street: {self.address['street']}; house: {self.address['building']}; apartment: {self.address['apartment']})"
+
+        return basic_message
