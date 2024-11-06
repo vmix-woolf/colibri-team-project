@@ -18,6 +18,8 @@ class Constants(Enum):
     BIRTHDAY_ADDED = "Birthday is added."
     BIRTHDAY_UPDATED = "Birthday is updated."
     ADDRESS_ADDED = "Address is added."
+    ADDRESS_UPDATED = "Address is updated."
+    ADDRESS_DELETED = "Address is deleted."
     NOTE_ADDED = "Note is added."
     # related to errors
     VALUE_ERROR = "Enter the correct argument value."
@@ -26,6 +28,7 @@ class Constants(Enum):
     NO_CONTACTS = "There are still no contacts."
     NO_SUCH_CONTACT = "No such contact in the address book."
     CONTACT_LIST_EMPTY = "Contact list is empty."
+    CONTACT_HAS_NO_ADDRESS = "This contact has no address."
     # related to emails
     EMAIL_IS_NOT_VALID = "Email is not valid."
     # related to phone
@@ -39,3 +42,6 @@ class Constants(Enum):
     NATURAL_NUMBER_ERROR = "The number of days must be a natural number."
     TITLE_TO_CONGRATULATE = "It's necessary to congratulate the following contacts:"
     NO_NECESSARY_TO_CONGRATULATE = "There are no contacts to be mailed in the coming days."
+    # related to address
+    ADDRESS_IS_ALREADY_PRESENT = "This contact has an address already. To change it please use 'change-...' command."
+

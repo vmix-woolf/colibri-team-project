@@ -53,6 +53,21 @@ class Record:
     def edit_birthday(self, new_birthday):
         self.birthday = new_birthday
 
+    @input_error
+    def add_address(self, address):
+        self.address = address
+
+    @input_error
+    def edit_address(self, new_address):
+        self.address = new_address
+
+    @input_error
+    def has_address(self):
+        return False if len(self.address) == 0 else True
+
+    @input_error
+    def remove_address(self):
+        self.address = {}
     def __str__(self):
         basic_message = f"Contact name: {self.name.value}, phones: {'; '.join(p for p in self.phones)}"
 

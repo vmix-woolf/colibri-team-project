@@ -2,13 +2,10 @@ from handlers.parser import parse_input
 from storage.keeper import save_data, load_data
 from messages.constants import Constants
 from handlers.handler import (
-    add_contact,
-    change_contact,
-    remove_phone,
-    show_contacts,
-    edit_phone,
-    add_phone,
-    add_birthday, change_birthday, birthdays
+    add_contact, change_contact, show_contacts,
+    add_phone, remove_phone, edit_phone,
+    add_birthday, change_birthday, birthdays,
+    add_address, change_address, remove_address
 )
 
 def main():
@@ -39,6 +36,12 @@ def main():
             print(add_birthday(args, addressbook))
         elif command == "change-birthday":
             print(change_birthday(args, addressbook))
+        elif command == "add-address":
+            print(add_address(args, addressbook))
+        elif command == "change-address":
+            print(change_address(args, addressbook))
+        elif command == "remove-address":
+            print(remove_address(args, addressbook))
         elif command == "birthdays":
             birthdays(addressbook)
         elif command == "all":

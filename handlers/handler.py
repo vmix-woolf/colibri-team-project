@@ -8,8 +8,9 @@ from assistant.phone import Phone
 from assistant.record import Record
 from decorators.decorate import input_error
 from messages.constants import Constants
-from exceptions.exceptions import (InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
-NoSuchContactException, InvalidDateFormatException, InvalidDateValueException
+from exceptions.exceptions import (
+    InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
+    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException
 )
 
 
@@ -130,11 +131,9 @@ def change_birthday(args, addressbook: AddressBook):
     record = addressbook.find_record(name)
 
     if record is None:
-        # raise NoSuchContactException
         return Constants.NO_SUCH_CONTACT.value
 
     if not record.has_birthday():
-        # raise NoBirthdayException
         return Constants.CONTACT_HAS_NOT_BIRTHDAY.value
 
     if not Birthday.birthday_format_validation(new_birthday):
@@ -176,3 +175,79 @@ def birthdays(addressbook):
                 continue
         else:
             return Constants.NO_NECESSARY_TO_CONGRATULATE.value
+
+@input_error
+def add_address(args, addressbook: AddressBook):
+    name, *_ = args
+
+    if len(args) < 1:
+        raise ValueError
+
+    record = addressbook.find_record(name)
+
+    if record is None:
+        raise NoSuchContactException
+
+    if record.has_address():
+        return Constants.ADDRESS_IS_ALREADY_PRESENT.value
+    else:
+        city = input('Type the name of the city: ')
+        street = input('Type the name of the street: ')
+        building = input('Type a number of the building: ')
+        apartment = int(input('Type a number of the apartment: '))
+        address = {
+            'city': city if city else 'N/A',
+            'street': street if street else 'N/A',
+            'building': building if building else 'N/A',
+            'apartment': apartment if apartment else 'N/A',
+        }
+
+        record.add_address(address)
+
+        return Constants.ADDRESS_ADDED.value
+
+@input_error
+def change_address(args, addressbook: AddressBook):
+    name, *_ = args
+
+    if len(args) < 1:
+        raise ValueError
+
+    record = addressbook.find_record(name)
+
+    if record is None:
+        return Constants.NO_SUCH_CONTACT.value
+
+    city = input('Type the name of the city: ')
+    street = input('Type the name of the street: ')
+    building = input('Type a number of the building: ')
+    apartment = input('Type a number of the apartment: ')
+    address = {
+        'city': city if city else 'N/A',
+        'street': street if street else 'N/A',
+        'building': building if building else 'N/A',
+        'apartment': apartment if apartment else 'N/A',
+    }
+
+    record.edit_address(address)
+
+    return Constants.ADDRESS_UPDATED.value
+
+@input_error
+def remove_address(args, addressbook: AddressBook):
+    name, *_ = args
+
+    if len(args) < 1:
+        raise ValueError
+
+    record = addressbook.find_record(name)
+
+    if record is None:
+        return Constants.NO_SUCH_CONTACT.value
+
+    if not record.has_address():
+        return Constants.CONTACT_HAS_NO_ADDRESS.value
+    else:
+        record.remove_address()
+
+        return Constants.ADDRESS_DELETED.value
