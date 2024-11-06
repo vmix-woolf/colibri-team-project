@@ -1,10 +1,16 @@
 # Personal assistant
-***
+
+---
+
 ### Description
 
+### Installing
 
+1. Clone this repository locally
+2. Run `python -m pip install -r requirements.txt` for installing dependencies
 
 ### Command List
+
 `hello` -
 
 `add <contact_name> <phone_number>` - adds **contact name** and their **phone number**
