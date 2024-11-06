@@ -7,7 +7,8 @@ from handlers.handler import (
     remove_phone,
     show_contacts,
     edit_phone,
-    add_phone
+    add_phone,
+    add_birthday, change_birthday, birthdays
 )
 
 def main():
@@ -34,6 +35,12 @@ def main():
             print(remove_phone(args, addressbook))
         elif command == "edit-phone":
             print(edit_phone(args, addressbook))
+        elif command == "add-birthday":
+            print(add_birthday(args, addressbook))
+        elif command == "change-birthday":
+            print(change_birthday(args, addressbook))
+        elif command == "birthdays":
+            birthdays(addressbook)
         elif command == "all":
             show_contacts(addressbook)
         else:

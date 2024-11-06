@@ -41,6 +41,18 @@ class Record:
         except ValueError:
             return False
 
+    @input_error
+    def add_birthday(self, birthday):
+        self.birthday = birthday
+
+    @input_error
+    def has_birthday(self):
+        return True if self.birthday is not None else False
+
+    @input_error
+    def edit_birthday(self, new_birthday):
+        self.birthday = new_birthday
+
     def __str__(self):
         basic_message = f"Contact name: {self.name.value}, phones: {'; '.join(p for p in self.phones)}"
 

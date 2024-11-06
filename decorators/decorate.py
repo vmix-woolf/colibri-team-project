@@ -5,7 +5,7 @@ from exceptions.exceptions import (
     InvalidDateFormatException,
     InvalidDateValueException,
     PhoneIsAlreadyBelongingException,
-    PhoneNumberException
+    PhoneNumberException, ContactHasBirthdayException, NoSuchContactException
 )
 def input_error(func):
     def inner(*args, **kwargs):
@@ -25,5 +25,9 @@ def input_error(func):
             return Constants.PHONE_BELONGS_TO_CONTACT.value
         except PhoneNumberException:
             return Constants.PRECISE_DIGITS_ERROR.value
+        except NoSuchContactException:
+            return Constants.NO_SUCH_CONTACT.value
+        except ContactHasBirthdayException:
+            return Constants.CONTACT_HAS_BIRTHDAY.value
 
     return inner

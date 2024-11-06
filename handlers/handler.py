@@ -1,13 +1,15 @@
+import re
+from colorama import Fore
+from datetime import datetime as dt
 from assistant.addressbook import AddressBook
+from assistant.birthday import Birthday
 from assistant.name import Name
 from assistant.phone import Phone
 from assistant.record import Record
 from decorators.decorate import input_error
 from messages.constants import Constants
-from exceptions.exceptions import (
-    InvalidNameException,
-    PhoneNumberException,
-    PhoneIsAlreadyBelongingException,
+from exceptions.exceptions import (InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
+NoSuchContactException, InvalidDateFormatException, InvalidDateValueException
 )
 
 
@@ -85,3 +87,92 @@ def edit_phone(args, book: AddressBook):
         return Constants.PHONE_UPDATED.value
     # TODO: разделить нужно эти две причины либо контакт не найден, либо номер не соответствует
     return "Contact not found or old phone number does not match."
+
+@input_error
+def add_birthday(args, addressbook: AddressBook):
+    name, birthday, *_ = args
+
+    if len(args) < 2:
+        raise ValueError
+
+    if not Name.name_validation(name):
+        raise InvalidNameException
+
+    record = addressbook.find_record(name)
+
+    if record is None:
+        raise NoSuchContactException
+
+    if record.has_birthday():
+        # raise ContactHasBirthdayException
+        return Constants.CONTACT_HAS_BIRTHDAY.value
+
+    if not Birthday.birthday_format_validation(birthday):
+        raise InvalidDateFormatException
+
+    if not Birthday.birthday_value_validation(birthday):
+        raise InvalidDateValueException
+    else:
+        record.add_birthday(birthday)
+
+        return Constants.BIRTHDAY_ADDED.value
+
+@input_error
+def change_birthday(args, addressbook: AddressBook):
+    name, new_birthday, *_ = args
+
+    if len(args) < 2:
+        raise ValueError
+
+    if not Name.name_validation(name):
+        raise InvalidNameException
+
+    record = addressbook.find_record(name)
+
+    if record is None:
+        # raise NoSuchContactException
+        return Constants.NO_SUCH_CONTACT.value
+
+    if not record.has_birthday():
+        # raise NoBirthdayException
+        return Constants.CONTACT_HAS_NOT_BIRTHDAY.value
+
+    if not Birthday.birthday_format_validation(new_birthday):
+        raise InvalidDateFormatException
+
+    if not Birthday.birthday_value_validation(new_birthday):
+        raise InvalidDateValueException
+    else:
+        record.edit_birthday(new_birthday)
+
+        return Constants.BIRTHDAY_UPDATED.value
+
+@input_error
+def birthdays(addressbook):
+    days_qty = input(Fore.LIGHTGREEN_EX + "Enter the number of days in which the birthday is to occur: " + Fore.YELLOW)
+    if not (re.match(r'\d+', days_qty) and days_qty != 0):
+        return Constants.NATURAL_NUMBER_ERROR.value
+
+    if len(addressbook) == 0:
+        print(Constants.CONTACT_LIST_EMPTY.value)
+    else:
+        today = dt.today().date()
+
+        for record in addressbook.values():
+            if record.birthday is None:
+                continue
+
+            birthday_date = dt.strptime(record.birthday, "%d.%m.%Y")
+            birthday_this_year = birthday_date.date().replace(year=today.year)
+
+            if birthday_this_year < today:
+                next_birthday = birthday_this_year.replace(year=today.year + 1)
+            else:
+                next_birthday = birthday_this_year
+
+            if (next_birthday - today).days <= int(days_qty):
+                print(Fore.RESET, record)
+            else:
+                continue
+        else:
+            return Constants.NO_NECESSARY_TO_CONGRATULATE.value

@@ -25,6 +25,7 @@ class Constants(Enum):
     NAME_IS_NOT_VALID = "Name is not valid."
     NO_CONTACTS = "There are still no contacts."
     NO_SUCH_CONTACT = "No such contact in the address book."
+    CONTACT_LIST_EMPTY = "Contact list is empty."
     # related to emails
     EMAIL_IS_NOT_VALID = "Email is not valid."
     # related to phone
@@ -33,3 +34,8 @@ class Constants(Enum):
     # related to the birthday
     INVALID_FORMAT_ERROR = "Invalid date format. Use DD.MM.YYYY"
     INVALID_DATE_VALUE_ERROR = "Invalid date value. Use correct date."
+    CONTACT_HAS_BIRTHDAY = "This contact has already their birthday."
+    CONTACT_HAS_NOT_BIRTHDAY = "This contact has not their birthday yet. Use the command 'add-birthday ...' to add a birthday.'"
+    NATURAL_NUMBER_ERROR = "The number of days must be a natural number."
+    TITLE_TO_CONGRATULATE = "It's necessary to congratulate the following contacts:"
+    NO_NECESSARY_TO_CONGRATULATE = "There are no contacts to be mailed in the coming days."
