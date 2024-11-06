@@ -2,7 +2,7 @@ from enum import Enum
 
 class Constants(Enum):
     NUMBER_OF_DIGITS_IN_PHONE_NUMBER = 3
-    ADDRESS_BOOK_FILE_NAME = "addressbook.pkl"
+    ADDRESS_BOOK_FILE_PKL = "addressbook.pkl"
 
     WELCOME_MESSAGE = "Welcome to the Personal Assistant bot!"
     INVALID_COMMAND_ERROR = "Invalid command."
@@ -29,6 +29,7 @@ class Constants(Enum):
     EMAIL_IS_NOT_VALID = "Email is not valid."
     # related to phone
     PHONE_BELONGS_TO_CONTACT = "This phone number already belongs to this contact."
+    PRECISE_DIGITS_ERROR = f"Phone should consist of exactly {NUMBER_OF_DIGITS_IN_PHONE_NUMBER} digits!"
     # related to the birthday
     INVALID_FORMAT_ERROR = "Invalid date format. Use DD.MM.YYYY"
     INVALID_DATE_VALUE_ERROR = "Invalid date value. Use correct date."

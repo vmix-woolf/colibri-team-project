@@ -4,7 +4,6 @@ from decorators.decorate import input_error
 from exceptions.exceptions import PhoneNumberException
 
 
-@input_error
 class Record:
 
     def __init__(self, name):
@@ -14,28 +13,33 @@ class Record:
         self.email = None
         self.birthday = None
 
-    def add_phone(self, phone_number):
-        self.phones.append(phone_number)
-
+    @input_error
     def remove_phone(self, phone):
-        # TODO: нужно разобраться с валидацией такого метода у нас нет
-        if not Phone.validate(phone):
+        if not Phone.phone_number_validation(phone):
             raise PhoneNumberException
         for phone_obj in self.phones:
             if phone_obj.value == phone:
                 self.phones.remove(phone_obj)
                 return True
         return False
-    
+
+    @input_error
+    def add_phone(self, phone_number):
+        self.phones.append(phone_number)
+
+    @input_error
     def edit_phone(self, old_phone, new_phone):
-        # TODO: нужно разобраться с валидацией такого метода у нас нет
-        if not Phone.validate(new_phone):
-            raise PhoneNumberException
-        for phone_obj in self.phones:
-            if phone_obj.value == old_phone:
-                phone_obj.value = new_phone
-                return True
-        return False
+        index = self.phones.index(old_phone)
+        self.phones[index] = new_phone
+
+    @input_error
+    def find_phone(self, phone_number):
+        try:
+            index = self.phones.index(phone_number)
+
+            return self.phones[index]
+        except ValueError:
+            return False
 
     def __str__(self):
         basic_message = f"Contact name: {self.name.value}, phones: {'; '.join(p for p in self.phones)}"
