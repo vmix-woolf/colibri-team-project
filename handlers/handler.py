@@ -53,6 +53,18 @@ def add_contact(args, addressbook):
 def change_contact(args, addressbook: AddressBook):
     pass
 
+def remove_contact(args, book: AddressBook):
+    name, *_ = args
+
+    record = book.find_record(name)
+    if record:
+        book.remove_record(name)
+        #should be uncomment after save_data will be added
+        #save_data(book)
+        return f"Contact with name {name} removed."
+    return "Contact not found."
+
+
 def remove_phone(args, book: AddressBook):
     name, phone = args
     record = book.find_record(name)
