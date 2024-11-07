@@ -31,9 +31,9 @@ class Record:
                 return True
         return False
 
-    def find_phone(self, phone_number):
-        for phone in self.phones:
-            if phone.value == phone_number.value:
+    def find_phone(self, phone):
+        for phone_number in self.phones:
+            if phone.value == phone_number:
                 return phone
         return None
 
