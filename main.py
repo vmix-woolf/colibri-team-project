@@ -50,7 +50,7 @@ def main():
             print(edit_phone(args, addressbook))
         elif command == "add-birthday":
             print(add_birthday(args, addressbook))
-        elif command == "cedit-birthday":
+        elif command == "edit-birthday":
             print(change_birthday(args, addressbook))
         elif command == "add-address":
             print(add_address(args, addressbook))
