@@ -323,7 +323,7 @@ def edit_email(args, book: AddressBook):
     if len(args) < 3:
         raise ValueError("Error: You must provide Name, Old email and New one.")
     
-    name, old_email, new_email = args
+    name, old_email, new_email, *_ = args
     record = book.find_record(name)
 
     if not record:
@@ -346,3 +346,19 @@ def edit_email(args, book: AddressBook):
 
     record.edit_email(record.email, email_obj_new)
     return Constants.EMAIL_UPDATED.value
+
+@input_error
+def show_email(args, book: AddressBook):
+    if len(args) < 1:
+        raise ValueError("Error: You must provide Name")
+    
+    name, *_ = args
+    record = book.find_record(name)
+    
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    
+    if not record.email:
+        raise ValueError("This contact doesn't have an email. Please add one first.")
+    
+    return record.show_email()

@@ -42,6 +42,9 @@ class Record:
             self.email = email
             return True
         return False
+    
+    def show_email(self):
+        return self.email.value
 
     def remove_email(self):
         removed_value = self.email.value
