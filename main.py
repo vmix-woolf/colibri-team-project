@@ -69,7 +69,7 @@ def main():
         elif command == "show-email":
             print(show_email(args, addressbook))
         elif command == "all":
-            show_contacts(addressbook)
+            print(show_contacts(addressbook))
         else:
             print(Constants.INVALID_COMMAND_ERROR.value)
 
