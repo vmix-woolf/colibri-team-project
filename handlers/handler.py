@@ -299,13 +299,23 @@ def add_email(args, book: AddressBook):
         
     record.add_email(email_obj)
     return Constants.EMAIL_ADDED.value
-            
-    
-    
 
 @input_error
 def remove_email(args, book: AddressBook):
-    pass
+    if len(args) < 1:
+        raise ValueError("Error: You must provide Name")
+    
+    name, *_ = args
+    record = book.find_record(name)
+
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    
+    if record.email.value:
+        removed_email = record.remove_email()
+        return f"{removed_email} {Constants.EMAIL_REMOVED.value}"
+    else:
+        raise ValueError("This contact doesn't have such email")
 
 @input_error
 def edit_email(args, book: AddressBook):
