@@ -8,7 +8,9 @@
 `hello` -
 
 #### contacts and phones
-`add <contact_name> <phone_number>` - 
+`add <contact_name> <phone_number>` - adds **contact name** and their **phone number**
+
+`change <contact_name> <phone_number>` - update **phone number** for the **contact**
 
 `add-phone <contact_name> <phone_number>` - 
 
@@ -63,7 +65,7 @@
 
 `sort <#tag>`
 #### ai
-тут секция по предсказанию комманд
+the is will be section on command's prompt
 
 
-`exit`, `quit`, `close`- выход из программы с пожеланием счстливой дороги!
+`exit`, `quit`, `close`- exit program and good luck wishes!
