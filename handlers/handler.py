@@ -27,7 +27,7 @@ def show_contacts(addressbook: AddressBook):
 @input_error
 def add_contact(args, addressbook):
     if len(args) < 2:
-        raise ValueError
+        raise ValueError("Error: You must provide both Name and Phone number.")
     
     name, phone_number, *_ = args    
 
@@ -37,18 +37,21 @@ def add_contact(args, addressbook):
     phone = Phone(phone_number)
     
     record = addressbook.find_record(name)
-
-    if record is None:  # if such name is new
-        record = Record(name)
-        addressbook.add_record(record)
-        record.add_phone(phone)
-
-        return Constants.CONTACT_ADDED.value
-    elif record.find_phone(phone_number):  # continue if such name is already kept
-        raise PhoneIsAlreadyBelongingException
+    
+    if record:
+        if record.find_phone(phone):
+            raise PhoneIsAlreadyBelongingException
+        else: 
+            record.add_phone(phone)
+            return Constants.CONTACT_UPDATED.value
     else:
-        record.add_phone(phone_number)
-        return Constants.CONTACT_UPDATED.value
+        if addressbook.find_by_phone(phone):
+            raise PhoneIsAlreadyBelongToAnotherException
+        else:
+            record = Record(name)
+            addressbook.add_record(record)
+            record.add_phone(phone)
+            return Constants.CONTACT_ADDED.value
 
 
 def change_contact(args, addressbook: AddressBook):
@@ -81,19 +84,20 @@ def add_phone(args, book: AddressBook):
 
     phone = Phone(phone_number)
     record = book.find_record(name)
-    if record:
-        for _, contact in book.items():
-            for existing_phone in contact.phones:
-                if existing_phone.value == phone_number and name == contact.name.value:
-                    raise  PhoneIsAlreadyBelongingException
-                elif existing_phone.value == phone_number:
-                    raise PhoneIsAlreadyBelongToAnotherException
-            record.add_phone(phone)
-        # should be uncomment after save_data will be added
-        # save_data(book)
-        return Constants.PHONE_ADDED.value
 
-    return Constants.NO_SUCH_CONTACT.value
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    
+    existing_record = book.find_by_phone(phone)
+
+    if existing_record:
+        if existing_record.name.value == name:
+            raise PhoneIsAlreadyBelongingException
+        else:
+            raise PhoneIsAlreadyBelongToAnotherException
+
+    record.add_phone(phone)
+    return Constants.PHONE_ADDED.value
 
 @input_error
 def edit_phone(args, book: AddressBook):
