@@ -12,17 +12,23 @@ from decorators.decorate import input_error
 from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
-    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException, PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException
+    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException,
+    PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException, EmailNotValidException
 )
 from helpers import format_table
 
 @input_error
-def show_contacts(addressbook: AddressBook):
-    if len(addressbook) == 0:
-        return Constants.NO_CONTACTS.value
+def show_contacts(contacts, error_message):
+    if contacts is None:
+        return error_message
+    if isinstance(contacts, Record):
+        records_list = [contacts]
+    else:
+        records_list = list(contacts)
+    if len(records_list) == 0:
+        return error_message
     else:
         fields = ["Name", "Phones", "Address", "Email", "Birthday"]
-        records_list = list(addressbook.data.values())
         return format_table(fields, records_list)
 
 @input_error
@@ -52,6 +58,20 @@ def add_contact(args, addressbook):
             addressbook.add_record(record)
             record.add_phone(phone)
             return Constants.CONTACT_ADDED.value
+
+def remove_contact(args, book: AddressBook):
+    if len(args) < 1:
+        raise ValueError("You must provide Name")
+
+    name, *_ = args
+
+    record = book.find_record(name)
+    if record:
+        book.remove_record(name)
+
+        return Constants.CONTACT_DELETED.value
+
+    return Constants.NO_SUCH_CONTACT.value
 
 def change_contact(args, addressbook: AddressBook):
     pass
@@ -371,3 +391,39 @@ def show_email(args, book: AddressBook):
         raise ValueError("This contact doesn't have an email. Please add one first.")
     
     return record.show_email()
+
+@input_error
+def search_by_name(args, addressbook: AddressBook):
+    name, *_ = args
+
+    if len(args) < 1:
+        raise ValueError("You must provide Name")
+
+    return addressbook.find_record(name)
+
+@input_error
+def search_by_birthday(args, addressbook: AddressBook):
+    birthday, *_ = args
+
+    if len(args) < 1:
+        raise ValueError("You must provide Birthday")
+
+    if not Birthday.birthday_format_validation(birthday):
+        raise InvalidDateFormatException
+
+    if not Birthday.birthday_value_validation(birthday):
+        raise InvalidDateValueException
+
+    return addressbook.find_by_birthday(birthday)
+
+@input_error
+def search_by_email(args, addressbook: AddressBook):
+    email, *_ = args
+
+    if len(args) < 1:
+        raise ValueError("You must provide Email")
+
+    if not Email.email_validation(email):
+        raise EmailNotValidException
+
+    return addressbook.find_by_email(email)

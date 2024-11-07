@@ -52,7 +52,7 @@
 
 `birthdays` -
 #### search
-`search <contact_name>` - 
+`search-name <contact_name>` - 
 
 `search-email <email>` -
 
