@@ -53,31 +53,21 @@ def add_contact(args, addressbook):
 def change_contact(args, addressbook: AddressBook):
     pass
 
-
-def remove_contact(args, book: AddressBook):
-    if len(args) < 1:
-        raise ValueError("Error: You must provide both Name")
-
-    name, *_ = args
-
-    record = book.find_record(name)
-    if record:
-        book.remove_record(name)
-
-        return Constants.CONTACT_DELETED.value
-
-    return Constants.NO_SUCH_CONTACT.value
-
-
+@input_error
 def remove_phone(args, book: AddressBook):
     if len(args) < 2:
         raise ValueError("Error: You must provide both Name and Phone number.")
 
-    name, phone = args
-    record = book.find_record(name)
+    name, phone_number, *_ = args 
+    if not Phone.phone_number_validation(phone_number):
+        raise PhoneNumberException    
+    
+    record = book.find_record(name)        
     if record:
-        if record.remove_phone(phone):
-            return f"Phone number {phone} removed from {name}."
+        if record.remove_phone(phone_number):
+            #should be uncomment after save_data will be added
+            #save_data(book)
+            return f"Phone number {phone_number} removed from {name}."
         return "Phone number not found."
     return "Contact not found."
 
