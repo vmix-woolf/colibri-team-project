@@ -59,7 +59,7 @@ def main():
         elif command == "remove-address":
             print(remove_address(args, addressbook))
         elif command == "birthdays":
-            birthdays(addressbook)
+            print(birthdays(addressbook))
         elif command == "add-email":
             print(add_email(args, addressbook))
         elif command == "edit-email":

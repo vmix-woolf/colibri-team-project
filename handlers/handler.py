@@ -14,26 +14,16 @@ from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
     NoSuchContactException, InvalidDateFormatException, InvalidDateValueException, PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException
 )
-from prettytable import PrettyTable
+from helpers import format_table
 
 @input_error
 def show_contacts(addressbook: AddressBook):
     if len(addressbook) == 0:
-        print(Constants.NO_CONTACTS.value)
-    
+        return Constants.NO_CONTACTS.value
     else:
-        table = PrettyTable()
-        table.field_names = ["Name", "Phones", "Address", "Email", "Birthday"]
-        for record in addressbook.data.values():
-            name = record.name.value
-            phones = ', '.join(str(phone) for phone in record.phones) if record.phones else "No phones"
-            email = record.email.value if record.email else "No email"
-            birthday = record.birthday if record.birthday else "No birthday"
-            address = str(record.address) if record.address else "No address"
-
-            table.add_row([name, phones, address, email, birthday])
-        return str(table)
-
+        fields = ["Name", "Phones", "Address", "Email", "Birthday"]
+        records_list = list(addressbook.data.values())
+        return format_table(fields, records_list)
 
 @input_error
 def add_contact(args, addressbook):
@@ -46,7 +36,6 @@ def add_contact(args, addressbook):
         raise InvalidNameException
 
     phone = Phone(phone_number)
-    
     record = addressbook.find_record(name)
     
     if record:
@@ -63,7 +52,6 @@ def add_contact(args, addressbook):
             addressbook.add_record(record)
             record.add_phone(phone)
             return Constants.CONTACT_ADDED.value
-
 
 def change_contact(args, addressbook: AddressBook):
     pass
@@ -196,10 +184,10 @@ def birthdays(addressbook):
         return Constants.NATURAL_NUMBER_ERROR.value
 
     if len(addressbook) == 0:
-        print(Constants.CONTACT_LIST_EMPTY.value)
+       return Constants.CONTACT_LIST_EMPTY.value
     else:
         today = dt.today().date()
-
+        result = []
         for record in addressbook.values():
             if record.birthday is None:
                 continue
@@ -213,11 +201,14 @@ def birthdays(addressbook):
                 next_birthday = birthday_this_year
 
             if (next_birthday - today).days <= int(days_qty):
-                print(Fore.RESET, record)
+                result.append(record)
             else:
                 continue
-        else:
+        if not result:
             return Constants.NO_NECESSARY_TO_CONGRATULATE.value
+        
+    fields = ["Name", "Phones", "Address", "Email", "Birthday"]
+    return format_table(fields, result)
 
 @input_error
 def add_address(args, addressbook: AddressBook):
