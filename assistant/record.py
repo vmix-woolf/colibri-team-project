@@ -51,8 +51,11 @@ class Record:
         return False
 
     def edit_email(self, old_email, new_email):
-        if self.remove_email(old_email):
-            self.add_email(new_email)
+        if self.email.value == old_email.value:
+            if self.remove_email():
+                self.add_email(new_email)
+                return True        
+        return False
 
 
     @input_error

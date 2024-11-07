@@ -320,4 +320,29 @@ def remove_email(args, book: AddressBook):
 
 @input_error
 def edit_email(args, book: AddressBook):
-    pass
+    if len(args) < 3:
+        raise ValueError("Error: You must provide Name, Old email and New one.")
+    
+    name, old_email, new_email = args
+    record = book.find_record(name)
+
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    
+    if not Email.email_validation(old_email):
+        raise PhoneNumberException
+    
+    email_obj_new = Email(new_email)
+
+    if not record.email:
+        raise ValueError("This contact doesn't have an email. Please add one first.")
+
+    if record.email.value != old_email:
+        raise ValueError("The provided old email does not match the current email of this contact.")
+
+    for _, contact in book.items():
+        if contact.email and contact.email.value == new_email:
+            raise EmailIsAlreadyBelongToAnotherException("This new email is already assigned to another contact.")
+
+    record.edit_email(record.email, email_obj_new)
+    return Constants.EMAIL_UPDATED.value
