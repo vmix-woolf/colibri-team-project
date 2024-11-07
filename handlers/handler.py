@@ -28,7 +28,7 @@ def show_contacts(addressbook: AddressBook):
             name = record.name.value
             phones = ', '.join(str(phone) for phone in record.phones) if record.phones else "No phones"
             email = record.email.value if record.email else "No email"
-            birthday = record.show_birthday() if record.birthday else "No birthday"
+            birthday = record.birthday if record.birthday else "No birthday"
             address = str(record.address) if record.address else "No address"
 
             table.add_row([name, phones, address, email, birthday])
@@ -134,10 +134,10 @@ def edit_phone(args, book: AddressBook):
 
 @input_error
 def add_birthday(args, addressbook: AddressBook):
-    name, birthday, *_ = args
-
     if len(args) < 2:
-        raise ValueError
+        raise ValueError("Error: You must provide both Name and Birthday.")
+    
+    name, birthday, *_ = args
 
     if not Name.name_validation(name):
         raise InvalidNameException
