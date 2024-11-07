@@ -49,6 +49,7 @@ def add_contact(args, addressbook):
         record.add_phone(phone_number)
         return Constants.CONTACT_UPDATED.value
 
+
 def change_contact(args, addressbook: AddressBook):
     pass
 
