@@ -43,10 +43,11 @@ class Record:
             return True
         return False
 
-    def remove_email(self, email):
-        if self.email.value == email.value:
+    def remove_email(self):
+        removed_value = self.email.value
+        if self.email.value:
             self.email = None
-            return True
+            return removed_value
         return False
 
     def edit_email(self, old_email, new_email):

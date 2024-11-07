@@ -14,6 +14,7 @@ class Constants(Enum):
     PHONE_ADDED = "Phone is added."
     PHONE_UPDATED = "Phone is updated."
     EMAIL_ADDED = "Email is added."
+    EMAIL_REMOVED = "Email removed."
     EMAIL_UPDATED = "Email is updated."
     BIRTHDAY_ADDED = "Birthday is added."
     BIRTHDAY_UPDATED = "Birthday is updated."
