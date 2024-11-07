@@ -41,17 +41,19 @@ def add_contact(args, addressbook):
     if record:
         if record.find_phone(phone):
             raise PhoneIsAlreadyBelongingException
-        else: 
+        else:
             record.add_phone(phone)
             return Constants.CONTACT_UPDATED.value
+    # TODO: delete after resolve this moment
+    # else:
+    #     if addressbook.find_by_phone(phone):
+    #         raise PhoneIsAlreadyBelongToAnotherException
     else:
-        if addressbook.find_by_phone(phone):
-            raise PhoneIsAlreadyBelongToAnotherException
-        else:
-            record = Record(name)
-            addressbook.add_record(record)
-            record.add_phone(phone)
-            return Constants.CONTACT_ADDED.value
+        record = Record(name)
+        addressbook.add_record(record)
+
+        record.add_phone(phone)
+        return Constants.CONTACT_ADDED.value
 
 def change_contact(args, addressbook: AddressBook):
     pass
@@ -85,17 +87,18 @@ def add_phone(args, book: AddressBook):
 
     if not record:
         return Constants.NO_SUCH_CONTACT.value
-    
-    existing_record = book.find_by_phone(phone)
 
-    if existing_record:
-        if existing_record.name.value == name:
-            raise PhoneIsAlreadyBelongingException
-        else:
-            raise PhoneIsAlreadyBelongToAnotherException
-
-    record.add_phone(phone)
-    return Constants.PHONE_ADDED.value
+    # TODO: delete when resolve this moment
+    # existing_record = book.find_by_phone(phone)
+    #
+    # if existing_record:
+    #     if existing_record.name.value == name:
+    #         raise PhoneIsAlreadyBelongingException
+    #     else:
+    #         raise PhoneIsAlreadyBelongToAnotherException
+    else:
+        record.add_phone(phone)
+        return Constants.PHONE_ADDED.value
 
 @input_error
 def edit_phone(args, addressbook: AddressBook):
