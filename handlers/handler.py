@@ -10,7 +10,7 @@ from decorators.decorate import input_error
 from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
-    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException
+    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException, PhoneIsAlreadyBelongToAnotherException
 )
 
 
@@ -25,23 +25,22 @@ def show_contacts(addressbook: AddressBook):
 
 @input_error
 def add_contact(args, addressbook):
-    name, phone_number, *_ = args
-
     if len(args) < 2:
         raise ValueError
+    
+    name, phone_number, *_ = args    
 
     if not Name.name_validation(name):
         raise InvalidNameException
 
-    if not Phone.phone_number_validation(phone_number):
-        raise PhoneNumberException
-
+    phone = Phone(phone_number)
+    
     record = addressbook.find_record(name)
 
     if record is None:  # if such name is new
         record = Record(name)
         addressbook.add_record(record)
-        record.add_phone(phone_number)
+        record.add_phone(phone)
 
         return Constants.CONTACT_ADDED.value
     elif record.find_phone(phone_number):  # continue if such name is already kept
@@ -71,6 +70,9 @@ def remove_contact(args, book: AddressBook):
 
 
 def remove_phone(args, book: AddressBook):
+    if len(args) < 2:
+        raise ValueError("Error: You must provide both Name and Phone number.")
+
     name, phone = args
     record = book.find_record(name)
     if record:
@@ -79,16 +81,26 @@ def remove_phone(args, book: AddressBook):
         return "Phone number not found."
     return "Contact not found."
 
-
+@input_error
 def add_phone(args, book: AddressBook):
-    name, phone, *_ = args
-
     if len(args) < 2:
-        raise ValueError
+        raise ValueError("Error: You must provide both Name and Phone number.")
 
+    name, phone_number, *_ = args
+
+    if not Name.name_validation(name):
+        raise InvalidNameException
+
+    phone = Phone(phone_number)
     record = book.find_record(name)
     if record:
-        record.add_phone(phone)
+        for _, contact in book.items():
+            for existing_phone in contact.phones:
+                if existing_phone.value == phone_number and name == contact.name.value:
+                    raise  PhoneIsAlreadyBelongingException
+                elif existing_phone.value == phone_number:
+                    raise PhoneIsAlreadyBelongToAnotherException
+            record.add_phone(phone)
         # should be uncomment after save_data will be added
         # save_data(book)
         return Constants.PHONE_ADDED.value
