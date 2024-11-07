@@ -49,6 +49,7 @@ def add_contact(args, addressbook):
         record.add_phone(phone_number)
         return Constants.CONTACT_UPDATED.value
 
+
 def change_contact(args, addressbook: AddressBook):
     pass
 
@@ -95,6 +96,7 @@ def add_phone(args, book: AddressBook):
         return Constants.PHONE_ADDED.value
 
     return Constants.NO_SUCH_CONTACT.value
+
 
 def edit_phone(args, book: AddressBook):
     name, old_phone, new_phone = args
