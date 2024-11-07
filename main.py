@@ -5,7 +5,7 @@ from handlers.handler import (
     add_contact, change_contact, show_contacts,
     add_phone, remove_phone, edit_phone,
     add_birthday, change_birthday, birthdays,
-    add_address, change_address, remove_address
+    add_address, change_address, remove_address, remove_contact
 )
 
 def main():
@@ -26,6 +26,8 @@ def main():
             print(add_contact(args, addressbook))
         elif command == "change":
             print(change_contact(args, addressbook))
+        elif command == "remove":
+            print(remove_contact(args, addressbook))
         elif command == "add-phone":
             print(add_phone(args, addressbook))
         elif command == "remove-phone":
