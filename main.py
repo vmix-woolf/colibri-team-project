@@ -27,6 +27,8 @@ def main():
             print(add_contact(args, addressbook))
         elif command == "change":
             print(change_contact(args, addressbook))
+        elif command == "remove":
+            print(remove_contact(args, addressbook))
         elif command == "add-phone":
             print(add_phone(args, addressbook))
         elif command == "remove-phone":
