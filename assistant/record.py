@@ -14,9 +14,9 @@ class Record:
         self.birthday = None
 
     def remove_phone(self, phone):
-        for phone_obj in self.phones:
-            if phone_obj.value == phone:
-                self.phones.remove(phone_obj)
+        for phone_item in self.phones:
+            if phone_item.value == phone.value:
+                self.phones.remove(phone_item)
                 return True
         return False
 
@@ -24,16 +24,15 @@ class Record:
         self.phones.append(phone_number)
 
     def edit_phone(self, old_phone, new_phone):
-        for phone in self.phones:
-            if phone.value == old_phone:
+
+        for phone_item in self.phones:
+            if phone_item.value == old_phone.value:
                 self.remove_phone(old_phone)
                 self.add_phone(new_phone)
-                return True
-        return False
 
     def find_phone(self, phone):
-        for phone_number in self.phones:
-            if phone.value == phone_number:
+        for phone_item in self.phones:
+            if phone.value == phone_item.value:
                 return phone
         return None
 
