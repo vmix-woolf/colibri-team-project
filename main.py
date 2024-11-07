@@ -8,13 +8,26 @@ from handlers.handler import (
     add_address, change_address, remove_address,
     add_email, remove_email, edit_email, show_email
 )
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import WordCompleter
+
+
+COMMANDS = [
+        "close", "exit", "quit", "hello", "add-contact", "edit-contact", 
+        "add-phone", "remove-phone", "edit-phone", "add-birthday", 
+        "edit-birthday", "add-address", "edit-address", "remove-address", 
+        "birthdays", "add-email", "edit-email", "remove-email", 
+        "show-email", "all"
+    ]
+
+command_completer = WordCompleter(COMMANDS, ignore_case=True)
 
 def main():
     addressbook = load_data()
     print(Constants.WELCOME_MESSAGE.value)
 
     while True:
-        user_input = input("Enter a command: ")
+        user_input = prompt("Enter a command: ", completer=command_completer)
         command, *args = parse_input(user_input)
 
         if command in ["close", "exit", "quit"]:
@@ -23,9 +36,9 @@ def main():
             break
         elif command == "hello":
             print("How can I help you?")
-        elif command == "add":
+        elif command == "add-contact":
             print(add_contact(args, addressbook))
-        elif command == "change":
+        elif command == "edit-contact":
             print(change_contact(args, addressbook))
         elif command == "remove":
             print(remove_contact(args, addressbook))
@@ -37,11 +50,11 @@ def main():
             print(edit_phone(args, addressbook))
         elif command == "add-birthday":
             print(add_birthday(args, addressbook))
-        elif command == "change-birthday":
+        elif command == "edit-birthday":
             print(change_birthday(args, addressbook))
         elif command == "add-address":
             print(add_address(args, addressbook))
-        elif command == "change-address":
+        elif command == "edit-address":
             print(change_address(args, addressbook))
         elif command == "remove-address":
             print(remove_address(args, addressbook))
