@@ -37,7 +37,7 @@ def add_contact(args, addressbook):
 
     phone = Phone(phone_number)
     record = addressbook.find_record(name)
-    
+
     if record:
         if record.find_phone(phone):
             raise PhoneIsAlreadyBelongingException
@@ -65,11 +65,10 @@ def remove_phone(args, book: AddressBook):
     if not Phone.phone_number_validation(phone_number):
         raise PhoneNumberException
     
-    record = book.find_record(name)        
+    record = book.find_record(name)
+    phone = Phone(phone_number)
     if record:
-        if record.remove_phone(phone_number):
-            #should be uncomment after save_data will be added
-            #save_data(book)
+        if record.remove_phone(phone):
             return f"Phone number {phone_number} removed from {name}."
         return "Phone number not found."
     return "Contact not found."
@@ -99,25 +98,26 @@ def add_phone(args, book: AddressBook):
     return Constants.PHONE_ADDED.value
 
 @input_error
-def edit_phone(args, book: AddressBook):
+def edit_phone(args, addressbook: AddressBook):
     if len(args) < 3:
         raise ValueError("Error: You must provide Name, Old number and New one.")
-    
-    name, old_phone, new_phone = args
 
-    if not Phone.phone_number_validation(old_phone):
+    name, old_phone_number, new_phone_number, *_ = args
+
+    if not Phone.phone_number_validation(old_phone_number):
         raise PhoneNumberException
-    
-    new_validated_number = Phone(new_phone)  
-    record = book.find_record(name)
+
+    old_phone = Phone(old_phone_number)
+    new_validated_phone = Phone(new_phone_number)
+    record = addressbook.find_record(name)
 
     if not record:
         return Constants.NO_SUCH_CONTACT.value
     else:
-        if not record.find_phone(Phone(old_phone)):
-            return Constants.PHONE_NOT_BELONG_TO_THIS_CONTACT.value
+        if not record.find_phone(old_phone):
+            return Constants.PHONE_NO_BELONGS_TO_THIS_CONTACT.value
         else:
-            record.edit_phone(old_phone, new_validated_number)
+            record.edit_phone(old_phone, new_validated_phone)
             return Constants.PHONE_UPDATED.value    
 
 @input_error

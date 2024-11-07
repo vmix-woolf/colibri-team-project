@@ -6,7 +6,7 @@ class Phone(Field):
 
     def __init__(self, value):
         if not self.phone_number_validation(value):
-            raise ValueError("Phone number must be exactly 10 digits.")
+            raise ValueError(Constants.PRECISE_DIGITS_ERROR.value)
         super().__init__(value)
 
     @staticmethod
