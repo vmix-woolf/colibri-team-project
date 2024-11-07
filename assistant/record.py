@@ -13,7 +13,6 @@ class Record:
         self.email = None
         self.birthday = None
 
-    @input_error
     def remove_phone(self, phone):
         for phone_obj in self.phones:
             if phone_obj.value == phone:
@@ -21,11 +20,9 @@ class Record:
                 return True
         return False
 
-    @input_error
     def add_phone(self, phone_number):
         self.phones.append(phone_number)
 
-    @input_error
     def edit_phone(self, old_phone, new_phone):
         for phone in self.phones:
             if phone.value == old_phone:
@@ -34,12 +31,28 @@ class Record:
                 return True
         return False
 
-    @input_error
     def find_phone(self, phone_number):
         for phone in self.phones:
             if phone.value == phone_number.value:
                 return phone
         return False
+
+    def add_email(self, email):
+        if not self.email:
+            self.email = email
+            return True
+        return False
+
+    def remove_email(self, email):
+        if self.email.value == email.value:
+            self.email = None
+            return True
+        return False
+
+    def edit_email(self, old_email, new_email):
+        if self.remove_email(old_email):
+            self.add_email(new_email)
+
 
     @input_error
     def add_birthday(self, birthday):
