@@ -21,6 +21,8 @@ from helpers import format_table
 def show_contacts(contacts, error_message):
     if contacts is None:
         return error_message
+    if isinstance(contacts, str):
+        return contacts
     if isinstance(contacts, Record):
         records_list = [contacts]
     else:
@@ -394,19 +396,19 @@ def show_email(args, book: AddressBook):
 
 @input_error
 def search_by_name(args, addressbook: AddressBook):
-    name, *_ = args
-
     if len(args) < 1:
         raise ValueError("You must provide Name")
+
+    name, *_ = args
 
     return addressbook.find_record(name)
 
 @input_error
 def search_by_birthday(args, addressbook: AddressBook):
-    birthday, *_ = args
-
     if len(args) < 1:
         raise ValueError("You must provide Birthday")
+
+    birthday, *_ = args
 
     if not Birthday.birthday_format_validation(birthday):
         raise InvalidDateFormatException
@@ -418,10 +420,10 @@ def search_by_birthday(args, addressbook: AddressBook):
 
 @input_error
 def search_by_email(args, addressbook: AddressBook):
-    email, *_ = args
-
     if len(args) < 1:
         raise ValueError("You must provide Email")
+
+    email, *_ = args
 
     if not Email.email_validation(email):
         raise EmailNotValidException
