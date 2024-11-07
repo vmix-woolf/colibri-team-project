@@ -11,6 +11,10 @@
 1. Clone this repository locally
 2. Run `python -m pip install -r requirements.txt` for installing dependencies
 
+### Running tests:
+
+1. Run `python -m unittest tests/test_commands.py`
+
 ### Command List
 
 `hello` -
