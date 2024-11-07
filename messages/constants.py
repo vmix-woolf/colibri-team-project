@@ -14,6 +14,7 @@ class Constants(Enum):
     PHONE_ADDED = "Phone is added."
     PHONE_UPDATED = "Phone is updated."
     EMAIL_ADDED = "Email is added."
+    EMAIL_REMOVED = "Email removed."
     EMAIL_UPDATED = "Email is updated."
     BIRTHDAY_ADDED = "Birthday is added."
     BIRTHDAY_UPDATED = "Birthday is updated."
@@ -31,8 +32,11 @@ class Constants(Enum):
     CONTACT_HAS_NO_ADDRESS = "This contact has no address."
     # related to emails
     EMAIL_IS_NOT_VALID = "Email is not valid."
+    EMAIL_BELONGS_TO_ANOTHER_CONTACT = "This email already belongs to another contact."
     # related to phone
     PHONE_BELONGS_TO_CONTACT = "This phone number already belongs to this contact."
+    PHONE_NOT_BELONG_TO_THIS_CONTACT = "The phone is not belong to this contact"
+    PHONE_BELONG_TO_ANOTHER_CONTACT = "This phone number already belongs to another contact."
     PRECISE_DIGITS_ERROR = f"Phone should consist of exactly {NUMBER_OF_DIGITS_IN_PHONE_NUMBER} digits!"
     # related to the birthday
     INVALID_FORMAT_ERROR = "Invalid date format. Use DD.MM.YYYY"

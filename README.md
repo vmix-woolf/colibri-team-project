@@ -1,10 +1,18 @@
 # Personal assistant
-***
+
+---
+
 ### Description
+
 Здесь будет описание и назначение программы.
 
+### Installing
+
+1. Clone this repository locally
+2. Run `python -m pip install -r requirements.txt` for installing dependencies
 
 ### Command List
+
 `hello` -
 
 #### contacts and phones
@@ -69,3 +77,4 @@ the is will be section on command's prompt
 
 
 `exit`, `quit`, `close`- exit program and good luck wishes!
+

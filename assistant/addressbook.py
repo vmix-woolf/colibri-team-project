@@ -20,3 +20,9 @@ class AddressBook(UserDict):
             if record.name.value == contact_name:
                 record_key = key
         del self.data[record_key]
+
+    def find_by_phone(self, phone):
+        for record in self.data.values():
+            if record.find_phone(phone) is not None:
+                return record
+        return False

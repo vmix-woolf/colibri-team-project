@@ -5,12 +5,13 @@ from assistant.addressbook import AddressBook
 from assistant.birthday import Birthday
 from assistant.name import Name
 from assistant.phone import Phone
+from assistant.email import Email
 from assistant.record import Record
 from decorators.decorate import input_error
 from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
-    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException
+    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException, PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException
 )
 
 
@@ -25,23 +26,22 @@ def show_contacts(addressbook: AddressBook):
 
 @input_error
 def add_contact(args, addressbook):
-    name, phone_number, *_ = args
-
     if len(args) < 2:
         raise ValueError
+    
+    name, phone_number, *_ = args    
 
     if not Name.name_validation(name):
         raise InvalidNameException
 
-    if not Phone.phone_number_validation(phone_number):
-        raise PhoneNumberException
-
+    phone = Phone(phone_number)
+    
     record = addressbook.find_record(name)
 
     if record is None:  # if such name is new
         record = Record(name)
         addressbook.add_record(record)
-        record.add_phone(phone_number)
+        record.add_phone(phone)
 
         return Constants.CONTACT_ADDED.value
     elif record.find_phone(phone_number):  # continue if such name is already kept
@@ -50,44 +50,72 @@ def add_contact(args, addressbook):
         record.add_phone(phone_number)
         return Constants.CONTACT_UPDATED.value
 
+
 def change_contact(args, addressbook: AddressBook):
     pass
 
+@input_error
 def remove_phone(args, book: AddressBook):
-    name, phone = args
-    record = book.find_record(name)
+    if len(args) < 2:
+        raise ValueError("Error: You must provide both Name and Phone number.")
+
+    name, phone_number, *_ = args 
+    if not Phone.phone_number_validation(phone_number):
+        raise PhoneNumberException
+    
+    record = book.find_record(name)        
     if record:
-        if record.remove_phone(phone):
+        if record.remove_phone(phone_number):
             #should be uncomment after save_data will be added
             #save_data(book)
-            return f"Phone number {phone} removed from {name}."
+            return f"Phone number {phone_number} removed from {name}."
         return "Phone number not found."
     return "Contact not found."
 
+@input_error
 def add_phone(args, book: AddressBook):
-    name, phone, *_ = args
-
     if len(args) < 2:
-        raise ValueError
+        raise ValueError("Error: You must provide both Name and Phone number.")
 
+    name, phone_number, *_ = args
+
+    phone = Phone(phone_number)
     record = book.find_record(name)
     if record:
-        record.add_phone(phone)
+        for _, contact in book.items():
+            for existing_phone in contact.phones:
+                if existing_phone.value == phone_number and name == contact.name.value:
+                    raise  PhoneIsAlreadyBelongingException
+                elif existing_phone.value == phone_number:
+                    raise PhoneIsAlreadyBelongToAnotherException
+            record.add_phone(phone)
         # should be uncomment after save_data will be added
         # save_data(book)
         return Constants.PHONE_ADDED.value
 
     return Constants.NO_SUCH_CONTACT.value
 
+@input_error
 def edit_phone(args, book: AddressBook):
+    if len(args) < 3:
+        raise ValueError("Error: You must provide Name, Old number and New one.")
+    
     name, old_phone, new_phone = args
+
+    if not Phone.phone_number_validation(old_phone):
+        raise PhoneNumberException
+    
+    new_validated_number = Phone(new_phone)  
     record = book.find_record(name)
-    if record and record.edit_phone(old_phone, new_phone):
-        # should be uncomment after save_data will be added
-        #save_data(book)
-        return Constants.PHONE_UPDATED.value
-    # TODO: разделить нужно эти две причины либо контакт не найден, либо номер не соответствует
-    return "Contact not found or old phone number does not match."
+
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    else:
+        if not record.find_phone(Phone(old_phone)):
+            return Constants.PHONE_NOT_BELONG_TO_THIS_CONTACT.value
+        else:
+            record.edit_phone(old_phone, new_validated_number)
+            return Constants.PHONE_UPDATED.value    
 
 @input_error
 def add_birthday(args, addressbook: AddressBook):
@@ -251,3 +279,70 @@ def remove_address(args, addressbook: AddressBook):
         record.remove_address()
 
         return Constants.ADDRESS_DELETED.value
+
+@input_error
+def add_email(args, book: AddressBook):
+    if len(args) < 2:
+        raise ValueError("Error: You must provide both Name and Email number.")
+
+    name, email, *_ = args
+    email_obj = Email(email)
+    record = book.find_record(name)
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    
+    if record.email:
+        raise ValueError("The contact already has an email. You can edit it or remove.")
+    
+    for _, contact in book.items():
+        if contact.email and contact.email.value == email:
+            raise EmailIsAlreadyBelongToAnotherException("This email is already assigned to another contact.")
+        
+    record.add_email(email_obj)
+    return Constants.EMAIL_ADDED.value
+
+@input_error
+def remove_email(args, book: AddressBook):
+    if len(args) < 1:
+        raise ValueError("Error: You must provide Name")
+    
+    name, *_ = args
+    record = book.find_record(name)
+
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    
+    if record.email.value:
+        removed_email = record.remove_email()
+        return f"{removed_email} {Constants.EMAIL_REMOVED.value}"
+    else:
+        raise ValueError("This contact doesn't have such email")
+
+@input_error
+def edit_email(args, book: AddressBook):
+    if len(args) < 3:
+        raise ValueError("Error: You must provide Name, Old email and New one.")
+    
+    name, old_email, new_email = args
+    record = book.find_record(name)
+
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    
+    if not Email.email_validation(old_email):
+        raise PhoneNumberException
+    
+    email_obj_new = Email(new_email)
+
+    if not record.email:
+        raise ValueError("This contact doesn't have an email. Please add one first.")
+
+    if record.email.value != old_email:
+        raise ValueError("The provided old email does not match the current email of this contact.")
+
+    for _, contact in book.items():
+        if contact.email and contact.email.value == new_email:
+            raise EmailIsAlreadyBelongToAnotherException("This new email is already assigned to another contact.")
+
+    record.edit_email(record.email, email_obj_new)
+    return Constants.EMAIL_UPDATED.value
