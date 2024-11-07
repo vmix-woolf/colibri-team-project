@@ -27,8 +27,12 @@ class Record:
 
     @input_error
     def edit_phone(self, old_phone, new_phone):
-        index = self.phones.index(old_phone)
-        self.phones[index] = new_phone
+        for phone in self.phones:
+            if phone.value == old_phone:
+                self.remove_phone(old_phone)
+                self.add_phone(new_phone)
+                return True
+        return False
 
     @input_error
     def find_phone(self, phone_number):
