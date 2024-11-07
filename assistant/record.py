@@ -35,7 +35,7 @@ class Record:
         for phone in self.phones:
             if phone.value == phone_number.value:
                 return phone
-        return False
+        return None
 
     def add_email(self, email):
         if not self.email:
