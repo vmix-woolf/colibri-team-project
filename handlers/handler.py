@@ -3,6 +3,7 @@ from colorama import Fore
 from datetime import datetime as dt
 from assistant.addressbook import AddressBook
 from assistant.birthday import Birthday
+from assistant.address import Address
 from assistant.name import Name
 from assistant.phone import Phone
 from assistant.email import Email
@@ -13,16 +14,16 @@ from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
     NoSuchContactException, InvalidDateFormatException, InvalidDateValueException, PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException
 )
-
+from helpers import format_table
 
 @input_error
 def show_contacts(addressbook: AddressBook):
     if len(addressbook) == 0:
-        print(Constants.NO_CONTACTS.value)
+        return Constants.NO_CONTACTS.value
     else:
-        for _, contact in addressbook.items():
-            print(contact)
-
+        fields = ["Name", "Phones", "Address", "Email", "Birthday"]
+        records_list = list(addressbook.data.values())
+        return format_table(fields, records_list)
 
 @input_error
 def add_contact(args, addressbook):
@@ -35,7 +36,6 @@ def add_contact(args, addressbook):
         raise InvalidNameException
 
     phone = Phone(phone_number)
-    
     record = addressbook.find_record(name)
     
     if record:
@@ -52,7 +52,6 @@ def add_contact(args, addressbook):
             addressbook.add_record(record)
             record.add_phone(phone)
             return Constants.CONTACT_ADDED.value
-
 
 def change_contact(args, addressbook: AddressBook):
     pass
@@ -123,10 +122,10 @@ def edit_phone(args, book: AddressBook):
 
 @input_error
 def add_birthday(args, addressbook: AddressBook):
-    name, birthday, *_ = args
-
     if len(args) < 2:
-        raise ValueError
+        raise ValueError("Error: You must provide both Name and Birthday.")
+    
+    name, birthday, *_ = args
 
     if not Name.name_validation(name):
         raise InvalidNameException
@@ -185,10 +184,10 @@ def birthdays(addressbook):
         return Constants.NATURAL_NUMBER_ERROR.value
 
     if len(addressbook) == 0:
-        print(Constants.CONTACT_LIST_EMPTY.value)
+       return Constants.CONTACT_LIST_EMPTY.value
     else:
         today = dt.today().date()
-
+        result = []
         for record in addressbook.values():
             if record.birthday is None:
                 continue
@@ -202,18 +201,21 @@ def birthdays(addressbook):
                 next_birthday = birthday_this_year
 
             if (next_birthday - today).days <= int(days_qty):
-                print(Fore.RESET, record)
+                result.append(record)
             else:
                 continue
-        else:
+        if not result:
             return Constants.NO_NECESSARY_TO_CONGRATULATE.value
+        
+    fields = ["Name", "Phones", "Address", "Email", "Birthday"]
+    return format_table(fields, result)
 
 @input_error
 def add_address(args, addressbook: AddressBook):
-    name, *_ = args
-
     if len(args) < 1:
-        raise ValueError
+        raise ValueError("Error: You must provide Name")
+    
+    name, *_ = args   
 
     record = addressbook.find_record(name)
 
@@ -234,16 +236,19 @@ def add_address(args, addressbook: AddressBook):
             'apartment': apartment if apartment else 'N/A',
         }
 
-        record.add_address(address)
+        address_obj = Address(address['city'], address['street'], address['building'], address['apartment'])
+        print(address_obj)
+
+        record.add_address(address_obj)
 
         return Constants.ADDRESS_ADDED.value
 
 @input_error
 def change_address(args, addressbook: AddressBook):
-    name, *_ = args
-
     if len(args) < 1:
-        raise ValueError
+        raise ValueError("Error: You must provide Name")
+
+    name, *_ = args
 
     record = addressbook.find_record(name)
 
@@ -267,10 +272,10 @@ def change_address(args, addressbook: AddressBook):
 
 @input_error
 def remove_address(args, addressbook: AddressBook):
-    name, *_ = args
-
     if len(args) < 1:
-        raise ValueError
+        raise ValueError("Error: You must provide Name")
+
+    name, *_ = args
 
     record = addressbook.find_record(name)
 

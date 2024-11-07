@@ -88,6 +88,7 @@ class Record:
     @input_error
     def remove_address(self):
         self.address = {}
+    
     def __str__(self):
         basic_message = f"Contact name: {self.name.value}, phones: {'; '.join(str(p) for p in self.phones)}"
 
@@ -98,6 +99,6 @@ class Record:
             basic_message += f", birthday: {self.birthday}"
 
         if len(self.address) != 0:
-            basic_message += f", address: (city: {self.address['city']}; street: {self.address['street']}; house: {self.address['building']}; apartment: {self.address['apartment']})"
+            basic_message += f", address: {str(self.address)}"
 
         return basic_message
