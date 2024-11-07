@@ -48,4 +48,3 @@ class Constants(Enum):
     NO_NECESSARY_TO_CONGRATULATE = "There are no contacts to be mailed in the coming days."
     # related to address
     ADDRESS_IS_ALREADY_PRESENT = "This contact has an address already. To change it please use 'change-...' command."
-
