@@ -33,6 +33,7 @@ class Constants(Enum):
     EMAIL_IS_NOT_VALID = "Email is not valid."
     # related to phone
     PHONE_BELONGS_TO_CONTACT = "This phone number already belongs to this contact."
+    PHONE_NOT_BELONG_TO_THIS_CONTACT = "The phone is not belong to this contact"
     PHONE_BELONG_TO_ANOTHER_CONTACT = "This phone number already belongs to another contact."
     PRECISE_DIGITS_ERROR = f"Phone should consist of exactly {NUMBER_OF_DIGITS_IN_PHONE_NUMBER} digits!"
     # related to the birthday

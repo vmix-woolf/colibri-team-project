@@ -60,7 +60,7 @@ def remove_phone(args, book: AddressBook):
 
     name, phone_number, *_ = args 
     if not Phone.phone_number_validation(phone_number):
-        raise PhoneNumberException    
+        raise PhoneNumberException
     
     record = book.find_record(name)        
     if record:
@@ -97,16 +97,27 @@ def add_phone(args, book: AddressBook):
 
     return Constants.NO_SUCH_CONTACT.value
 
-
+@input_error
 def edit_phone(args, book: AddressBook):
+    if len(args) < 3:
+        raise ValueError("Error: You must provide Name, Old number and New one.")
+    
     name, old_phone, new_phone = args
+
+    if not Phone.phone_number_validation(old_phone):
+        raise PhoneNumberException
+    
+    new_validated_number = Phone(new_phone)  
     record = book.find_record(name)
-    if record and record.edit_phone(old_phone, new_phone):
-        # should be uncomment after save_data will be added
-        #save_data(book)
-        return Constants.PHONE_UPDATED.value
-    # TODO: разделить нужно эти две причины либо контакт не найден, либо номер не соответствует
-    return "Contact not found or old phone number does not match."
+
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    else:
+        if not record.find_phone(Phone(old_phone)):
+            return Constants.PHONE_NOT_BELONG_TO_THIS_CONTACT.value
+        else:
+            record.edit_phone(old_phone, new_validated_number)
+            return Constants.PHONE_UPDATED.value    
 
 @input_error
 def add_birthday(args, addressbook: AddressBook):
