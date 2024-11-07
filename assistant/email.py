@@ -15,4 +15,8 @@ class Email(Field):
 
     @staticmethod
     def email_validation(email):
-        return True if bool(re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$', email)) else False
+        return re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$', email)
+    
+    def __str__(self):
+        return self.value
+    

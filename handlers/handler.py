@@ -5,12 +5,13 @@ from assistant.addressbook import AddressBook
 from assistant.birthday import Birthday
 from assistant.name import Name
 from assistant.phone import Phone
+from assistant.email import Email
 from assistant.record import Record
 from decorators.decorate import input_error
 from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
-    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException, PhoneIsAlreadyBelongToAnotherException
+    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException, PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException
 )
 
 
@@ -77,9 +78,6 @@ def add_phone(args, book: AddressBook):
         raise ValueError("Error: You must provide both Name and Phone number.")
 
     name, phone_number, *_ = args
-
-    if not Name.name_validation(name):
-        raise InvalidNameException
 
     phone = Phone(phone_number)
     record = book.find_record(name)
@@ -281,3 +279,35 @@ def remove_address(args, addressbook: AddressBook):
         record.remove_address()
 
         return Constants.ADDRESS_DELETED.value
+
+@input_error
+def add_email(args, book: AddressBook):
+    if len(args) < 2:
+        raise ValueError("Error: You must provide both Name and Email number.")
+
+    name, email, *_ = args
+    email_obj = Email(email)
+    record = book.find_record(name)
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+    
+    if record.email:
+        raise ValueError("The contact already has an email. You can edit it or remove.")
+    
+    for _, contact in book.items():
+        if contact.email and contact.email.value == email:
+            raise EmailIsAlreadyBelongToAnotherException("This email is already assigned to another contact.")
+        
+    record.add_email(email_obj)
+    return Constants.EMAIL_ADDED.value
+            
+    
+    
+
+@input_error
+def remove_email(args, book: AddressBook):
+    pass
+
+@input_error
+def edit_email(args, book: AddressBook):
+    pass
