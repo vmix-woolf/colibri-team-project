@@ -53,6 +53,7 @@ def add_contact(args, addressbook):
             record.add_phone(phone)
             return Constants.CONTACT_ADDED.value
 
+
 def change_contact(args, addressbook: AddressBook):
     pass
 
@@ -326,7 +327,7 @@ def edit_email(args, book: AddressBook):
     if len(args) < 3:
         raise ValueError("Error: You must provide Name, Old email and New one.")
     
-    name, old_email, new_email = args
+    name, old_email, new_email, *_ = args
     record = book.find_record(name)
 
     if not record:
@@ -355,7 +356,7 @@ def show_email(args, book: AddressBook):
     if len(args) < 1:
         raise ValueError("Error: You must provide Name")
     
-    name, = args
+    name, *_ = args
     record = book.find_record(name)
     
     if not record:
