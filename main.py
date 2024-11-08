@@ -2,9 +2,9 @@ from handlers.parser import parse_input
 from storage.keeper import save_data, load_data
 from messages.constants import Constants
 from handlers.handler import (
-    add_contact, change_contact, format_contacts,
+    add_contact, format_contacts,
     add_phone, remove_phone, edit_phone,
-    add_birthday, change_birthday, birthdays,
+    add_birthday, change_birthday, remove_birthday, birthdays,
     add_address, change_address, remove_address,
     add_email, remove_email, edit_email, show_email, search_by_name, search_by_birthday, search_by_email, remove_contact
 )
@@ -13,12 +13,14 @@ from prompt_toolkit.completion import WordCompleter
 
 
 COMMANDS = [
-        "close", "exit", "quit", "hello", "add-contact", "edit-contact", "remove-contact",
-        "add-phone", "remove-phone", "edit-phone", "add-birthday",
-        "edit-birthday", "add-address", "edit-address", "remove-address", 
-        "birthdays", "add-email", "edit-email", "remove-email",
-        "search-name", "search-birthday", "search-email",
-        "show-email", "all"
+        "close", "exit", "quit", "hello",
+        "add-contact", "edit-contact",
+        "add-phone", "edit-phone", "remove-phone",
+        "add-birthday", "edit-birthday", "remove-birthday",
+        "add-address", "edit-address", "remove-address", "birthdays",
+        "add-email", "edit-email", "remove-email", "show-email",
+        "search-name", "search-birthday", "search-email"
+        "all"
     ]
 
 command_completer = WordCompleter(COMMANDS, ignore_case=True)
@@ -39,8 +41,6 @@ def main():
             print("How can I help you?")
         elif command == "add-contact":
             print(add_contact(args, addressbook))
-        elif command == "edit-contact":
-            print(change_contact(args, addressbook))
         elif command == "remove-contact":
             print(remove_contact(args, addressbook))
         elif command == "add-phone":
@@ -53,6 +53,8 @@ def main():
             print(add_birthday(args, addressbook))
         elif command == "edit-birthday":
             print(change_birthday(args, addressbook))
+        elif command == "remove-birthday":
+            print(remove_birthday(args, addressbook))
         elif command == "add-address":
             print(add_address(args, addressbook))
         elif command == "edit-address":
