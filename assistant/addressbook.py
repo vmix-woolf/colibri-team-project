@@ -26,3 +26,15 @@ class AddressBook(UserDict):
     #         if record.find_phone(phone) is not None:
     #             return record
     #     return False
+
+    def find_by_birthday(self, birthday):
+        contacts = []
+        for _, record in self.data.items():
+            if record.birthday == birthday:
+                contacts.append(record)
+        return contacts
+
+    def find_by_email(self, email):
+        for _, record in self.data.items():
+            if record.email.value == email:
+                return record

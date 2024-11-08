@@ -38,6 +38,8 @@ Personal Assistant , implemented as commands in the command line interface, is u
 `add-email <contact_name> <email>` - 
 
 `change-email <contact_name> <email>` -
+
+`show-email <contact_name>` -
 #### address
 `add-address <contact_name>` -
 
@@ -53,7 +55,7 @@ Personal Assistant , implemented as commands in the command line interface, is u
 
 `birthdays` -
 #### search
-`search <contact_name>` - 
+`search-name <contact_name>` - 
 
 `search-email <email>` -
 
