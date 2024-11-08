@@ -5,7 +5,7 @@ from messages.constants import Constants
 
 class Notebook(UserDict):
     """Робота із нотатками"""
-    def __init__(self, filename="notes.json"):
+    def __init__(self, filename="notes.pkl"):
         super().__init__()
         self.filename = filename
         self.load_notes()  # Завантажуємо нотатки з файлу при ініціалізації
@@ -76,20 +76,16 @@ class Notebook(UserDict):
 
     def load_notes(self):
         """Завантажує нотатки з файлу"""
-        try:
-            with open(self.filename, "rb") as f:
-                notes_data = pickle.load(f)
-                for key, note_data in notes_data.items():
-                    self.data[int(key)] = Note.from_dict(note_data)
-                print(f"Loaded {len(self.data)} notes from '{self.filename}'.")
-        except FileNotFoundError:
-            print(Constants.NO_NOTES_START_FRESH.value)
+        with open(self.filename, "rb") as f:
+            notes_data = pickle.load(f)
+            for key, note_data in notes_data.items():
+                self.data[int(key)] = Note.from_dict(note_data)
 
     def save_notes(self):
         """Зберігає нотатки у файл"""
         with open(self.filename, "wb") as f:
             notes_data = {key: note.to_dict() for key, note in self.data.items()}
-            pickle.dump(notes_data, f, ensure_ascii=False, indent=4)
+            pickle.dump(notes_data, f)
             print(Constants.NOTES_SAVED.value)
 
     def show_all_notes(self):

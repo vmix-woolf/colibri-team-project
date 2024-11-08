@@ -393,7 +393,7 @@ def edit_note(notebook: Notebook, args):
     key = args[0]
     title = input("Enter new title (leave empty to keep current): ")
     content = input("Enter new content (leave empty to keep current): ")
-    notebook.edit_note(int(key), title or None, content or None))
+    notebook.edit_note(int(key), title or None, content or None)
 
 @input_error
 def remove_note(notebook: Notebook, args):
@@ -408,7 +408,7 @@ def add_tag(notebook: Notebook, args):
         tag = args[1]
         notebook.add_tag_to_note(title, tag)
     else:
-        print(Constants.NO_TITLE_AND_TAG.vlaue)
+        print(Constants.NO_TITLE_AND_TAG.value)
 
 def search_tag(notebook: Notebook, args):
     # Пошук нотаток за тегом
