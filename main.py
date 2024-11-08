@@ -6,18 +6,13 @@ from handlers.handler import (
     add_phone, remove_phone, edit_phone,
     add_birthday, change_birthday, birthdays,
     add_address, change_address, remove_address,
-    add_email, remove_email, edit_email, show_email,     add_note,
-    search_note,
-    edit_note,
-    remove_note,
-    add_tag,
-    search_tag,
-    sort_by_tag,
-    show_notes
+    add_email, remove_email, edit_email, show_email, 
+    add_note, edit_note, search_note, remove_note,
+    show_notes, add_tag, search_tag, sort_by_tag
 )
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
-from assistant.notemanager import NoteManager
+from assistant.notebook import Notebook
 
 COMMANDS = [
         "close", "exit", "quit", "hello", "add-contact", "edit-contact", 
@@ -32,7 +27,7 @@ command_completer = WordCompleter(COMMANDS, ignore_case=True)
 def main():
     addressbook = load_data()
     print(Constants.WELCOME_MESSAGE.value)
-    manager = NoteManager()
+    notebook = Notebook()
 
     while True:
         user_input = prompt("Enter a command: ", completer=command_completer)
@@ -80,21 +75,21 @@ def main():
             print(show_contacts(addressbook))
         #Команди для роботи з нотатками
         elif command == "add-note":
-            add_note(manager)
+            add_note(notebook)
         elif command == "search-text":
-            search_note(manager)
+            search_note(notebook)
         elif command == "edit-note":
-            edit_note(manager, args)
+            edit_note(notebook, args)
         elif command == "remove-note":
-            remove_note(manager, args)
+            remove_note(notebook, args)
         elif command == "add-tag":
-            add_tag(manager, args)
-        elif command == "search":
-            search_tag(manager, args)
-        elif command == "sort":
-            sort_by_tag(manager, args)
+            add_tag(notebook, args)
+        elif command == "search-tag":
+            search_tag(notebook, args)
+        elif command == "sort-tag":
+            sort_by_tag(notebook, args)
         elif command == "show-notes":
-            show_notes(manager)
+            show_notes(notebook)
         else:
             print(Constants.INVALID_COMMAND_ERROR.value)
 
