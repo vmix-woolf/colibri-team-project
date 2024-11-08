@@ -4,6 +4,7 @@ class Constants(Enum):
     NUMBER_OF_DIGITS_IN_PHONE_NUMBER = 3
     NUMBER_OF_DAYS_IN_THE_YEAR = 366
     ADDRESS_BOOK_FILE_PKL = "addressbook.pkl"
+    NOTEBOOK_FILE_PKL = "notebook.pkl"
 
     WELCOME_MESSAGE = "Welcome to the Personal Assistant bot!"
     INVALID_COMMAND_ERROR = "Invalid command."
@@ -54,3 +55,16 @@ class Constants(Enum):
     NO_NECESSARY_TO_CONGRATULATE = "There are no contacts to be mailed in the coming days."
     # related to address
     ADDRESS_IS_ALREADY_PRESENT = "This contact has an address already. To change it please use 'edit-address' command."
+    # related to notes
+    NO_NOTES_AVAILABLE = "No notes available!"
+    NO_NOTES_FOUND = "No notes found with the given text."
+    NOTE_NUM_EDITED = "Note number has been edited."
+    NOTE_REMOVED = "Note has been removed."
+    NOTE_NOT_FOUND = "Note not found."
+    NO_NOTES_START_FRESH = "No existing notes found, starting fresh."
+    NOTES_SAVED = "Notes saved."
+    INVALID_NOTE_KEY = "Please provide a valid note key."
+    TAG_ADDED_TO_NOTE = "Tag has been added."
+    SEARCH_RESULTS = "Search results"
+    NO_TITLE_AND_TAG = "Please provide title and tag."
+    

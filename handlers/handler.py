@@ -1,4 +1,3 @@
-import re
 from colorama import Fore
 from datetime import datetime as dt
 from assistant.addressbook import AddressBook
@@ -8,12 +7,15 @@ from assistant.name import Name
 from assistant.phone import Phone
 from assistant.email import Email
 from assistant.record import Record
+from assistant.notebook import Notebook
 from decorators.decorate import input_error
 from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
     NoSuchContactException, InvalidDateFormatException, InvalidDateValueException,
-    PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException, EmailNotValidException
+    EmailIsAlreadyBelongToAnotherException,
+    EmailIsAlreadyBelongToAnotherException,
+    EmailNotValidException
 )
 from helpers import format_table
 
@@ -133,7 +135,7 @@ def edit_phone(args, addressbook: AddressBook):
             return Constants.PHONE_NO_BELONGS_TO_THIS_CONTACT.value
         else:
             record.edit_phone(old_phone, new_validated_phone)
-            return Constants.PHONE_UPDATED.value    
+            return Constants.PHONE_UPDATED.value
 
 @input_error
 def add_birthday(args, addressbook: AddressBook):
@@ -400,6 +402,57 @@ def show_email(args, book: AddressBook):
         raise ValueError("This contact doesn't have an email. Please add one first.")
     
     return record.show_email()
+
+    #Функціх для роботи із нотатками
+
+def add_note(notebook: Notebook):
+    # Додавання нотатки
+    title = input("Enter the title of the note: ")
+    content = input("Enter the content of the note: ")
+    notebook.add_note(title, content)
+
+def search_note(notebook: Notebook):
+    # Пошук нотатки за текстом
+    text = input("Enter text to search for: ")
+    notebook.search_text(text)
+
+@input_error
+def edit_note(notebook: Notebook, args):
+    # Редагування нотатки за ключем
+    key = args[0]
+    title = input("Enter new title (leave empty to keep current): ")
+    content = input("Enter new content (leave empty to keep current): ")
+    notebook.edit_note(int(key), title or None, content or None)
+
+@input_error
+def remove_note(notebook: Notebook, args):
+    # Видалення нотатки за ключем
+    key = int(args[0])
+    notebook.remove_note(key)
+
+def add_tag(notebook: Notebook, args):
+        # Додавання тегу до нотатки
+    if len(args) == 2:
+        title = args[0]
+        tag = args[1]
+        notebook.add_tag_to_note(title, tag)
+    else:
+        print(Constants.NO_TITLE_AND_TAG.value)
+
+def search_tag(notebook: Notebook, args):
+    # Пошук нотаток за тегом
+    tag = args[0]
+    notebook.search_by_tag(tag)
+
+@input_error
+def sort_by_tag(notebook: Notebook, args):
+    # Сортування нотаток за тегом
+
+    tag = args[0]
+    notebook.sort_by_tag(tag) 
+
+def show_notes(notebook: Notebook):
+    notebook.show_all_notes()
 
 @input_error
 def search_by_name(args, addressbook: AddressBook):

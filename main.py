@@ -6,28 +6,35 @@ from handlers.handler import (
     add_phone, remove_phone, edit_phone,
     add_birthday, change_birthday, remove_birthday, birthdays,
     add_address, change_address, remove_address,
-    add_email, remove_email, edit_email, show_email, search_by_name, search_by_birthday, search_by_email, remove_contact
+    add_email, remove_email, edit_email, show_email, 
+    add_note, edit_note, search_note, remove_note,
+    show_notes, add_tag, search_tag, sort_by_tag,
+    search_by_name, search_by_birthday, search_by_email, remove_contact
 )
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
-
+from assistant.notebook import Notebook
 
 COMMANDS = [
-        "close", "exit", "quit", "hello",
-        "add-contact", "edit-contact",
-        "add-phone", "edit-phone", "remove-phone",
-        "add-birthday", "edit-birthday", "remove-birthday",
-        "add-address", "edit-address", "remove-address", "birthdays",
-        "add-email", "edit-email", "remove-email", "show-email",
-        "search-name", "search-birthday", "search-email"
-        "all"
-    ]
+    "close", "exit", "quit", "hello",
+    "add-contact", "edit-contact",
+    "add-phone", "edit-phone", "remove-phone",
+    "add-birthday", "edit-birthday", "remove-birthday",
+    "add-address", "edit-address", "remove-address", "birthdays",
+    "add-email", "edit-email", "remove-email", "show-email",
+    "search-name", "search-birthday", "search-email",  # Добавлена запятая
+    "all",  # Эта команда также добавлена
+    # Команды для работы с нотатками
+    "add-note", "search-text", "edit-note", "remove-note",
+    "add-tag", "search-tag", "sort-tag", "show-notes"
+]
 
 command_completer = WordCompleter(COMMANDS, ignore_case=True)
 
 def main():
     addressbook = load_data()
     print(Constants.WELCOME_MESSAGE.value)
+    notebook = Notebook()
 
     while True:
         user_input = prompt("Enter a command: ", completer=command_completer)
@@ -78,7 +85,24 @@ def main():
         elif command == "search-email":
             print(format_contacts(search_by_email(args, addressbook), Constants.NO_CONTACTS_WITH_EMAIL.value))
         elif command == "all":
-            print(format_contacts(addressbook.data.values(), Constants.NO_CONTACTS.value))
+            print(show_contacts(addressbook))
+        #Команди для роботи з нотатками
+        elif command == "add-note":
+            add_note(notebook)
+        elif command == "search-text":
+            search_note(notebook)
+        elif command == "edit-note":
+            edit_note(notebook, args)
+        elif command == "remove-note":
+            remove_note(notebook, args)
+        elif command == "add-tag":
+            add_tag(notebook, args)
+        elif command == "search-tag":
+            search_tag(notebook, args)
+        elif command == "sort-tag":
+            sort_by_tag(notebook, args)
+        elif command == "show-notes":
+            show_notes(notebook)
         else:
             print(Constants.INVALID_COMMAND_ERROR.value)
 
