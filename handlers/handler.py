@@ -8,11 +8,13 @@ from assistant.name import Name
 from assistant.phone import Phone
 from assistant.email import Email
 from assistant.record import Record
+from assistant.notebook import Notebook
 from decorators.decorate import input_error
 from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
-    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException, PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException
+    NoSuchContactException, InvalidDateFormatException, InvalidDateValueException,
+    PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException
 )
 from helpers import format_table
 
@@ -118,8 +120,8 @@ def edit_phone(args, addressbook: AddressBook):
             return Constants.PHONE_NO_BELONGS_TO_THIS_CONTACT.value
         else:
             record.edit_phone(old_phone, new_validated_phone)
-            return Constants.PHONE_UPDATED.value            
-          
+            return Constants.PHONE_UPDATED.value
+
 @input_error
 def add_birthday(args, addressbook: AddressBook):
     if len(args) < 2:
@@ -373,56 +375,52 @@ def show_email(args, book: AddressBook):
     return record.show_email()
 
     #Функціх для роботи із нотатками
-def add_note(manager):
+
+def add_note(notebook: Notebook):
     # Додавання нотатки
     title = input("Enter the title of the note: ")
     content = input("Enter the content of the note: ")
-    manager.add_note(title, content)
+    notebook.add_note(title, content)
 
-def search_note(manager):
+def search_note(notebook: Notebook):
     # Пошук нотатки за текстом
     text = input("Enter text to search for: ")
-    manager.search_text(text)
+    notebook.search_text(text)
 
-def edit_note(manager, args):
+@input_error
+def edit_note(notebook: Notebook, args):
     # Редагування нотатки за ключем
-    try:
-        key = args[0]
-        title = input("Enter new title (leave empty to keep current): ")
-        content = input("Enter new content (leave empty to keep current): ")
-        manager.edit_note(int(key), title or None, content or None)
-    except IndexError:
-        print("Please provide a valid note key.")
+    key = args[0]
+    title = input("Enter new title (leave empty to keep current): ")
+    content = input("Enter new content (leave empty to keep current): ")
+    notebook.edit_note(int(key), title or None, content or None))
 
-def remove_note(manager, args):
+@input_error
+def remove_note(notebook: Notebook, args):
     # Видалення нотатки за ключем
-    try:
-        key = int(args[0])
-        manager.remove_note(key)
-    except IndexError:
-        print("Please provide a valid note key.")
+    key = int(args[0])
+    notebook.remove_note(key)
 
-def add_tag(manager, args):
+def add_tag(notebook: Notebook, args):
         # Додавання тегу до нотатки
     if len(args) == 2:
         title = args[0]
         tag = args[1]
-        manager.add_tag_to_note(title, tag)
+        notebook.add_tag_to_note(title, tag)
     else:
-        print("Please provide title and tag.")
+        print(Constants.NO_TITLE_AND_TAG.vlaue)
 
-def search_tag(manager, args):
+def search_tag(notebook: Notebook, args):
     # Пошук нотаток за тегом
     tag = args[0]
-    manager.search_by_tag(tag)
+    notebook.search_by_tag(tag)
 
-def sort_by_tag(manager, args):
+@input_error
+def sort_by_tag(notebook: Notebook, args):
     # Сортування нотаток за тегом
-    try:
-        tag = args[0]
-        manager.sort_by_tag(tag)
-    except IndexError as e:
-        print(e) 
 
-def show_notes(manager):
-    manager.show_all_notes()
+    tag = args[0]
+    notebook.sort_by_tag(tag) 
+
+def show_notes(notebook: Notebook):
+    notebook.show_all_notes()

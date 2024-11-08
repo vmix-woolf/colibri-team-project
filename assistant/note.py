@@ -25,7 +25,7 @@ class Note:
         return {
             "title": self.title,
             "content": self.content,
-            "tag": list(self.tag)  # Теги перетворюємо на список для збереження в JSON
+            "tag": list(self.tag)  # Теги перетворюємо на список для збереження
         }
 
     @staticmethod

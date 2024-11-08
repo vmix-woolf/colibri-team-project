@@ -33,5 +33,7 @@ def input_error(func):
             return Constants.NO_SUCH_CONTACT.value
         except ContactHasBirthdayException:
             return Constants.CONTACT_HAS_BIRTHDAY.value
+        except IndexError as e:
+            return str(e)
 
     return inner
