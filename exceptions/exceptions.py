@@ -22,6 +22,9 @@ class PhoneIsAlreadyBelongToAnotherException(Exception):
 class EmailIsAlreadyBelongToAnotherException(Exception):
     pass
 
+class EmailIsAlreadyBelongToThisContactException(Exception):
+    pass
+
 class NoSuchContactException(Exception):
     pass
 

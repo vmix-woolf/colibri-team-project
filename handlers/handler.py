@@ -45,10 +45,6 @@ def add_contact(args, addressbook):
         else:
             record.add_phone(phone)
             return Constants.CONTACT_UPDATED.value
-    # TODO: delete after resolve this moment
-    # else:
-    #     if addressbook.find_by_phone(phone):
-    #         raise PhoneIsAlreadyBelongToAnotherException
     else:
         record = Record(name)
         addressbook.add_record(record)
@@ -86,18 +82,12 @@ def add_phone(args, book: AddressBook):
 
     if not record:
         return Constants.NO_SUCH_CONTACT.value
-
-    # TODO: delete when resolve this moment
-    # existing_record = book.find_by_phone(phone)
-    #
-    # if existing_record:
-    #     if existing_record.name.value == name:
-    #         raise PhoneIsAlreadyBelongingException
-    #     else:
-    #         raise PhoneIsAlreadyBelongToAnotherException
-    else:
-        record.add_phone(phone)
-        return Constants.PHONE_ADDED.value
+   
+    if record.find_phone(phone):
+        raise PhoneIsAlreadyBelongingException
+   
+    record.add_phone(phone)
+    return Constants.PHONE_ADDED.value
 
 @input_error
 def edit_phone(args, addressbook: AddressBook):
@@ -148,7 +138,7 @@ def add_birthday(args, addressbook: AddressBook):
 @input_error
 def change_birthday(args, addressbook: AddressBook):
     if len(args) < 2:
-        raise ValueError("Insufficient arguments provided.")
+        raise ValueError("Error: You must provide both Name and Birthday.")
 
     name, new_birthday, *_ = args
 
@@ -172,11 +162,11 @@ def change_birthday(args, addressbook: AddressBook):
 @input_error
 def birthdays(addressbook):
     days_qty = input(Fore.LIGHTGREEN_EX + "Enter the number of days in which the birthday is to occur: " + Fore.YELLOW)
-    if not (re.match(r'\d+', days_qty) and days_qty != 0):
-        return Constants.NATURAL_NUMBER_ERROR.value
+    while not (days_qty.isdigit() and int(days_qty) < Constants.NUMBER_OF_DAYS_IN_THE_YEAR.value):
+        days_qty = input(Fore.LIGHTGREEN_EX + "Enter the NUMBER of days, not more than 366 days and no text: " + Fore.YELLOW)
 
     if len(addressbook) == 0:
-       return Constants.CONTACT_LIST_EMPTY.value
+       return Fore.RESET + Constants.CONTACT_LIST_EMPTY.value
 
     today = dt.today().date()
     result = []
@@ -197,9 +187,11 @@ def birthdays(addressbook):
             result.append(record)
 
     if not result:
-        return Constants.NO_NECESSARY_TO_CONGRATULATE.value
+        return Fore.RESET + Constants.NO_NECESSARY_TO_CONGRATULATE.value
         
     fields = ["Name", "Phones", "Address", "Email", "Birthday"]
+    print(Fore.RESET)
+
     return format_table(fields, result)
 
 @input_error
@@ -275,7 +267,9 @@ def change_address(args, addressbook: AddressBook):
         'apartment': apartment if apartment else 'N/A',
     }
 
-    record.edit_address(address)
+    address_obj = Address(address['city'], address['street'], address['building'], address['apartment'])
+
+    record.edit_address(address_obj)
 
     return Constants.ADDRESS_UPDATED.value
 
@@ -314,7 +308,7 @@ def add_email(args, book: AddressBook):
     
     for _, contact in book.items():
         if contact.email and contact.email.value == email:
-            raise EmailIsAlreadyBelongToAnotherException("This email is already assigned to another contact.")
+            raise EmailIsAlreadyBelongToAnotherException
         
     record.add_email(email_obj)
     return Constants.EMAIL_ADDED.value
@@ -360,7 +354,10 @@ def edit_email(args, book: AddressBook):
 
     for _, contact in book.items():
         if contact.email and contact.email.value == new_email:
-            raise EmailIsAlreadyBelongToAnotherException("This new email is already assigned to another contact.")
+            if contact.name.value == name:
+                return "This email already belongs to this contact."
+            else:
+                raise EmailIsAlreadyBelongToAnotherException("This email is already assigned to another contact.")
 
     record.edit_email(record.email, email_obj_new)
     return Constants.EMAIL_UPDATED.value
