@@ -1,7 +1,5 @@
 from assistant.name import Name
-from assistant.phone import Phone
 from decorators.decorate import input_error
-from exceptions.exceptions import PhoneNumberException
 
 
 class Record:
@@ -59,7 +57,6 @@ class Record:
                 return True        
         return False
 
-
     @input_error
     def add_birthday(self, birthday):
         self.birthday = birthday
@@ -67,6 +64,10 @@ class Record:
     @input_error
     def has_birthday(self):
         return True if self.birthday is not None else False
+
+    @input_error
+    def remove_birthday(self):
+        self.birthday = None
 
     @input_error
     def edit_birthday(self, new_birthday):
