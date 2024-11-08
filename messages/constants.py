@@ -35,6 +35,7 @@ class Constants(Enum):
     # related to emails
     EMAIL_IS_NOT_VALID = "Email is not valid."
     EMAIL_BELONGS_TO_ANOTHER_CONTACT = "This email already belongs to another contact."
+    EMAIL_BELONGS_TO_CONTACT = "This email already belongs to this contact."
     # related to phone
     PHONE_BELONGS_TO_CONTACT = "This phone number already belongs to this contact."
     PHONE_NO_BELONGS_TO_THIS_CONTACT = "The phone doesn't belong to this contact"
