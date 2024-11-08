@@ -30,6 +30,9 @@ class Constants(Enum):
     NAME_IS_NOT_VALID = "Name is not valid."
     NO_CONTACTS = "There are still no contacts."
     NO_SUCH_CONTACT = "No such contact in the address book."
+    NO_CONTACTS_WITH_BIRTHDAY = "There are no contacts with current birthday."
+    NO_CONTACTS_WITH_EMAIL = "There are no contacts with current email."
+    NO_CONTACTS_WITH_NAME = "There are no contacts with current name."
     CONTACT_LIST_EMPTY = "Contact list is empty."
     CONTACT_HAS_NO_ADDRESS = "This contact has no address."
     # related to emails
