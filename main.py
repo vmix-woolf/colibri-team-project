@@ -85,7 +85,7 @@ def main():
         elif command == "search-email":
             print(format_contacts(search_by_email(args, addressbook), Constants.NO_CONTACTS_WITH_EMAIL.value))
         elif command == "all":
-            print(format_contacts(addressbook))
+            print(format_contacts(addressbook,  Constants.NO_CONTACTS.value))
         #Команди для роботи з нотатками
         elif command == "add-note":
             add_note(notebook)
