@@ -13,7 +13,7 @@ from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
     NoSuchContactException, InvalidDateFormatException, InvalidDateValueException,
-    PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException,
+    EmailIsAlreadyBelongToAnotherException,
     EmailIsAlreadyBelongToAnotherException,
     EmailNotValidException
 )
