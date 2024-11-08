@@ -1,10 +1,9 @@
 # Personal assistant
-
 ---
 
 ### Description
 
-Здесь будет описание и назначение программы.
+Personal Assistant , implemented as commands in the command line interface, is used to store information about contacts. Unique names, phone numbers, emails, birthdays, addresses are stored. It is also possible to store free-form notes in the form of tact records. 
 
 ### Installing
 
@@ -17,12 +16,14 @@
 
 ### Command List
 
-`hello` -
+`hello` - welcome message
 
 #### contacts and phones
 `add <contact_name> <phone_number>` - adds **contact name** and their **phone number**
 
 `change <contact_name> <phone_number>` - update **phone number** for the **contact**
+
+`remove <contact_name>` - 
 
 `add-phone <contact_name> <phone_number>` - 
 
@@ -30,7 +31,7 @@
 
 `remove-phone <contact_name> <phone_number>` - 
 
-`remove <contact_name>` - 
+
 
 `all` - 
 #### emails

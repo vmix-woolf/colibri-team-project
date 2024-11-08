@@ -1,4 +1,3 @@
-import re
 from colorama import Fore
 from datetime import datetime as dt
 from assistant.addressbook import AddressBook
@@ -14,7 +13,8 @@ from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
     NoSuchContactException, InvalidDateFormatException, InvalidDateValueException,
-    PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException
+    PhoneIsAlreadyBelongToAnotherException, EmailIsAlreadyBelongToAnotherException,
+    EmailIsAlreadyBelongToAnotherException
 )
 from helpers import format_table
 
@@ -43,20 +43,16 @@ def add_contact(args, addressbook):
     if record:
         if record.find_phone(phone):
             raise PhoneIsAlreadyBelongingException
-        else: 
+        else:
             record.add_phone(phone)
             return Constants.CONTACT_UPDATED.value
     else:
-        if addressbook.find_by_phone(phone):
-            raise PhoneIsAlreadyBelongToAnotherException
-        else:
-            record = Record(name)
-            addressbook.add_record(record)
-            record.add_phone(phone)
-            return Constants.CONTACT_ADDED.value
+        record = Record(name)
+        addressbook.add_record(record)
 
-def change_contact(args, addressbook: AddressBook):
-    pass
+        record.add_phone(phone)
+        return Constants.CONTACT_ADDED.value
+
 
 @input_error
 def remove_phone(args, book: AddressBook):
@@ -87,15 +83,10 @@ def add_phone(args, book: AddressBook):
 
     if not record:
         return Constants.NO_SUCH_CONTACT.value
-    
-    existing_record = book.find_by_phone(phone)
-
-    if existing_record:
-        if existing_record.name.value == name:
-            raise PhoneIsAlreadyBelongingException
-        else:
-            raise PhoneIsAlreadyBelongToAnotherException
-
+   
+    if record.find_phone(phone):
+        raise PhoneIsAlreadyBelongingException
+   
     record.add_phone(phone)
     return Constants.PHONE_ADDED.value
 
@@ -128,89 +119,98 @@ def add_birthday(args, addressbook: AddressBook):
         raise ValueError("Error: You must provide both Name and Birthday.")
     
     name, birthday, *_ = args
-
     if not Name.name_validation(name):
         raise InvalidNameException
 
     record = addressbook.find_record(name)
-
     if record is None:
         raise NoSuchContactException
 
     if record.has_birthday():
-        # raise ContactHasBirthdayException
         return Constants.CONTACT_HAS_BIRTHDAY.value
 
-    if not Birthday.birthday_format_validation(birthday):
-        raise InvalidDateFormatException
+    if not (Birthday.birthday_format_validation(birthday) and Birthday.birthday_value_validation(birthday)):
+        raise InvalidDateFormatException if not Birthday.birthday_format_validation(
+            birthday) else InvalidDateValueException
 
-    if not Birthday.birthday_value_validation(birthday):
-        raise InvalidDateValueException
-    else:
-        record.add_birthday(birthday)
-
-        return Constants.BIRTHDAY_ADDED.value
+    record.add_birthday(birthday)
+    return Constants.BIRTHDAY_ADDED.value
 
 @input_error
 def change_birthday(args, addressbook: AddressBook):
-    name, new_birthday, *_ = args
-
     if len(args) < 2:
-        raise ValueError
+        raise ValueError("Error: You must provide both Name and Birthday.")
+
+    name, new_birthday, *_ = args
 
     if not Name.name_validation(name):
         raise InvalidNameException
 
     record = addressbook.find_record(name)
-
     if record is None:
         return Constants.NO_SUCH_CONTACT.value
 
     if not record.has_birthday():
         return Constants.CONTACT_HAS_NOT_BIRTHDAY.value
 
-    if not Birthday.birthday_format_validation(new_birthday):
-        raise InvalidDateFormatException
+    if not (Birthday.birthday_format_validation(new_birthday) and Birthday.birthday_value_validation(new_birthday)):
+        raise InvalidDateFormatException if not Birthday.birthday_format_validation(
+            new_birthday) else InvalidDateValueException
 
-    if not Birthday.birthday_value_validation(new_birthday):
-        raise InvalidDateValueException
-    else:
-        record.edit_birthday(new_birthday)
-
-        return Constants.BIRTHDAY_UPDATED.value
+    record.edit_birthday(new_birthday)
+    return Constants.BIRTHDAY_UPDATED.value
 
 @input_error
 def birthdays(addressbook):
     days_qty = input(Fore.LIGHTGREEN_EX + "Enter the number of days in which the birthday is to occur: " + Fore.YELLOW)
-    if not (re.match(r'\d+', days_qty) and days_qty != 0):
-        return Constants.NATURAL_NUMBER_ERROR.value
+    while not (days_qty.isdigit() and int(days_qty) < Constants.NUMBER_OF_DAYS_IN_THE_YEAR.value):
+        days_qty = input(Fore.LIGHTGREEN_EX + "Enter the NUMBER of days, not more than 366 days and no text: " + Fore.YELLOW)
 
     if len(addressbook) == 0:
-       return Constants.CONTACT_LIST_EMPTY.value
-    else:
-        today = dt.today().date()
-        result = []
-        for record in addressbook.values():
-            if record.birthday is None:
-                continue
+       return Fore.RESET + Constants.CONTACT_LIST_EMPTY.value
 
-            birthday_date = dt.strptime(record.birthday, "%d.%m.%Y")
-            birthday_this_year = birthday_date.date().replace(year=today.year)
+    today = dt.today().date()
+    result = []
 
-            if birthday_this_year < today:
-                next_birthday = birthday_this_year.replace(year=today.year + 1)
-            else:
-                next_birthday = birthday_this_year
+    for record in addressbook.values():
+        if not record.birthday:
+            continue
 
-            if (next_birthday - today).days <= int(days_qty):
-                result.append(record)
-            else:
-                continue
-        if not result:
-            return Constants.NO_NECESSARY_TO_CONGRATULATE.value
+        birthday_date = dt.strptime(record.birthday, "%d.%m.%Y").date()
+        next_birthday = birthday_date.replace(year=today.year)
+
+        # Adjust to next year if the birthday this year has passed
+        if next_birthday < today:
+            next_birthday = next_birthday.replace(year=today.year + 1)
+
+        # Check if the birthday falls within the specified days
+        if (next_birthday - today).days <= int(days_qty):
+            result.append(record)
+
+    if not result:
+        return Fore.RESET + Constants.NO_NECESSARY_TO_CONGRATULATE.value
         
     fields = ["Name", "Phones", "Address", "Email", "Birthday"]
+    print(Fore.RESET)
+
     return format_table(fields, result)
+
+@input_error
+def remove_birthday(args, addressbook: AddressBook):
+    if len(args) < 1:
+        raise ValueError("Error: You must provide Name")
+
+    name, *_ = args
+    record = addressbook.find_record(name)
+    if not record:
+        return Constants.NO_SUCH_CONTACT.value
+
+    if not record.has_birthday():
+        return Constants.CONTACT_HAS_NOT_BIRTHDAY.value
+
+    record.remove_birthday()
+    return Constants.BIRTHDAY_DELETED.value
+
 
 @input_error
 def add_address(args, addressbook: AddressBook):
@@ -268,7 +268,9 @@ def change_address(args, addressbook: AddressBook):
         'apartment': apartment if apartment else 'N/A',
     }
 
-    record.edit_address(address)
+    address_obj = Address(address['city'], address['street'], address['building'], address['apartment'])
+
+    record.edit_address(address_obj)
 
     return Constants.ADDRESS_UPDATED.value
 
@@ -307,7 +309,7 @@ def add_email(args, book: AddressBook):
     
     for _, contact in book.items():
         if contact.email and contact.email.value == email:
-            raise EmailIsAlreadyBelongToAnotherException("This email is already assigned to another contact.")
+            raise EmailIsAlreadyBelongToAnotherException
         
     record.add_email(email_obj)
     return Constants.EMAIL_ADDED.value
@@ -353,7 +355,10 @@ def edit_email(args, book: AddressBook):
 
     for _, contact in book.items():
         if contact.email and contact.email.value == new_email:
-            raise EmailIsAlreadyBelongToAnotherException("This new email is already assigned to another contact.")
+            if contact.name.value == name:
+                return "This email already belongs to this contact."
+            else:
+                raise EmailIsAlreadyBelongToAnotherException("This email is already assigned to another contact.")
 
     record.edit_email(record.email, email_obj_new)
     return Constants.EMAIL_UPDATED.value
