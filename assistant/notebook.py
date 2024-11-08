@@ -2,6 +2,8 @@ from collections import UserDict
 import pickle
 from assistant.note import Note
 from messages.constants import Constants
+import os
+from prettytable import PrettyTable
 
 class Notebook(UserDict):
     """Робота із нотатками"""
@@ -21,9 +23,11 @@ class Notebook(UserDict):
         """Пошук нотаток за текстом в content"""
         results = {key: note for key, note in self.data.items() if text.lower() in note.content.lower()}
         if results:
+            table = PrettyTable()
+            table.field_names = ["Key", "Title", "Content", "Tags"]
             for key, note in results.items():
-                print(f"Found Note with key {key}:")
-                print(note)
+                table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
+            print(table)
         else:
             print(Constants.NO_NOTES_FOUND.value)
 
@@ -61,25 +65,32 @@ class Notebook(UserDict):
         """Пошук нотаток за тегом"""
         results = {key: note for key, note in self.data.items() if tag in note.tag}
         if results:
+            table = PrettyTable()
+            table.field_names = ["Key", "Title", "Content", "Tags"]
             for key, note in results.items():
-                print(Constants.SEARCH_RESULTS.value)
-                print(note)
+                table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
+            print(table)
         else:
             print(Constants.NOTE_NOT_FOUND.value)
 
     def sort_by_tag(self, tag):
         """Сортування нотаток за тегом"""
         sorted_notes = sorted(self.data.items(), key=lambda x: tag in x[1].tag)
+        table = PrettyTable()
+        table.field_names = ["Key", "Title", "Content", "Tags"]
         for key, note in sorted_notes:
-            print(f"Note number {key}:")
-            print(note)
+            table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
+        print(table)
 
     def load_notes(self):
         """Завантажує нотатки з файлу"""
-        with open(self.filename, "rb") as f:
-            notes_data = pickle.load(f)
-            for key, note_data in notes_data.items():
-                self.data[int(key)] = Note.from_dict(note_data)
+        if os.path.exists(self.filename): 
+            with open(self.filename, "rb") as f:
+                notes_data = pickle.load(f)
+                for key, note_data in notes_data.items():
+                    self.data[int(key)] = Note.from_dict(note_data)
+        else:
+            print("Файл з нотатками не знайдено, створюємо новий порожній словник.")
 
     def save_notes(self):
         """Зберігає нотатки у файл"""
@@ -92,7 +103,12 @@ class Notebook(UserDict):
         """Вивести всі нотатки"""
         if not self.data:
             print(Constants.NO_NOTES_AVAILABLE.value)
+            return
+        
+        table = PrettyTable()
+        table.field_names = ["Key", "Title", "Content", "Tags"]
+
         for key, note in self.data.items():
-            print(f"Note number {key}:")
-            print(note)  # Викликається метод __str__ класу Note
-            print("-" * 40)  # Для розділення нотаток виведенням лінії
+            table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
+
+        print(table)
