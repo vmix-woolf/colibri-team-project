@@ -58,24 +58,24 @@
 
 `search-birthday <db_date>` -
 #### notes
-`add-note` - 
+`add-note` - first use 'add-note' command, then write title and content of the th note
 
-`search-text <text>` -
+`search-text <text>` - find note by word in the content
 
-`edit-note <number_key>` -
+`edit-note <number_key>` - edit note's title and content by it's id
 
-`remove-note <number_key>` -
+`remove-note <number_key>` - remove note by it's id 
 
-`edit-note title <title>` -
+`edit-note title <title>` - 
 
-`remove-note title <title>` -
+`remove-note title <title>` - 
 
 #### additionally - tags
-`add-tag <title> <#tag>` -
+`add-tag <title> <#tag>` - add a tag to a note with the given title
 
-`search <#tag>` -
+`search <#tag>` - search note by tag
 
-`sort <#tag>`
+`sort <#tag>` - sort notes by the given tag
 #### ai
 the is will be section on command's prompt
 
