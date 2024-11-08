@@ -1,7 +1,7 @@
 from enum import Enum
 
 class Constants(Enum):
-    NUMBER_OF_DIGITS_IN_PHONE_NUMBER = 3
+    NUMBER_OF_DIGITS_IN_PHONE_NUMBER = 10
     NUMBER_OF_DAYS_IN_THE_YEAR = 366
     ADDRESS_BOOK_FILE_PKL = "addressbook.pkl"
     NOTEBOOK_FILE_PKL = "notebook.pkl"
@@ -44,7 +44,7 @@ class Constants(Enum):
     PHONE_BELONGS_TO_CONTACT = "This phone number already belongs to this contact."
     PHONE_NO_BELONGS_TO_THIS_CONTACT = "The phone doesn't belong to this contact"
     PHONE_BELONG_TO_ANOTHER_CONTACT = "This phone number already belongs to another contact."
-    PRECISE_DIGITS_ERROR = f"Phone should consist of exactly {NUMBER_OF_DIGITS_IN_PHONE_NUMBER} digits!"
+    PRECISE_DIGITS_ERROR = f"Phone number must be exactly {NUMBER_OF_DIGITS_IN_PHONE_NUMBER} digits!"
     # related to the birthday
     INVALID_FORMAT_ERROR = "Invalid date format. Use DD.MM.YYYY"
     INVALID_DATE_VALUE_ERROR = "Invalid date value. Use correct date."
