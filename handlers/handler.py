@@ -18,7 +18,7 @@ from exceptions.exceptions import (
 from helpers import format_table
 
 @input_error
-def show_contacts(contacts, error_message):
+def format_contacts(contacts, error_message):
     if contacts is None:
         return error_message
     if isinstance(contacts, str):

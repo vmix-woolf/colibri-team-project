@@ -37,6 +37,8 @@
 `add-email <contact_name> <email>` - 
 
 `change-email <contact_name> <email>` -
+
+`show-email <contact_name>` -
 #### address
 `add-address <contact_name>` -
 

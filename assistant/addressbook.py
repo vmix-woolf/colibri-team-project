@@ -38,4 +38,3 @@ class AddressBook(UserDict):
         for _, record in self.data.items():
             if record.email.value == email:
                 return record
-        return None

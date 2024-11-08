@@ -2,7 +2,7 @@ from handlers.parser import parse_input
 from storage.keeper import save_data, load_data
 from messages.constants import Constants
 from handlers.handler import (
-    add_contact, change_contact, show_contacts,
+    add_contact, change_contact, format_contacts,
     add_phone, remove_phone, edit_phone,
     add_birthday, change_birthday, birthdays,
     add_address, change_address, remove_address,
@@ -70,13 +70,13 @@ def main():
         elif command == "show-email":
             print(show_email(args, addressbook))
         elif command == "search-name":
-            print(show_contacts(search_by_name(args, addressbook), Constants.NO_CONTACTS_WITH_NAME.value))
+            print(format_contacts(search_by_name(args, addressbook), Constants.NO_CONTACTS_WITH_NAME.value))
         elif command == "search-birthday":
-            print(show_contacts(search_by_birthday(args, addressbook), Constants.NO_CONTACTS_WITH_BIRTHDAY.value))
+            print(format_contacts(search_by_birthday(args, addressbook), Constants.NO_CONTACTS_WITH_BIRTHDAY.value))
         elif command == "search-email":
-            print(show_contacts(search_by_email(args, addressbook), Constants.NO_CONTACTS_WITH_EMAIL.value))
+            print(format_contacts(search_by_email(args, addressbook), Constants.NO_CONTACTS_WITH_EMAIL.value))
         elif command == "all":
-            print(show_contacts(addressbook.data.values(), Constants.NO_CONTACTS.value))
+            print(format_contacts(addressbook.data.values(), Constants.NO_CONTACTS.value))
         else:
             print(Constants.INVALID_COMMAND_ERROR.value)
 
