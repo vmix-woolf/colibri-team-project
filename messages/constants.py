@@ -18,6 +18,7 @@ class Constants(Enum):
     EMAIL_UPDATED = "Email is updated."
     BIRTHDAY_ADDED = "Birthday is added."
     BIRTHDAY_UPDATED = "Birthday is updated."
+    BIRTHDAY_DELETED = "Birthday is deleted."
     ADDRESS_ADDED = "Address is added."
     ADDRESS_UPDATED = "Address is updated."
     ADDRESS_DELETED = "Address is deleted."
@@ -47,4 +48,4 @@ class Constants(Enum):
     TITLE_TO_CONGRATULATE = "It's necessary to congratulate the following contacts:"
     NO_NECESSARY_TO_CONGRATULATE = "There are no contacts to be mailed in the coming days."
     # related to address
-    ADDRESS_IS_ALREADY_PRESENT = "This contact has an address already. To change it please use 'change-...' command."
+    ADDRESS_IS_ALREADY_PRESENT = "This contact has an address already. To change it please use 'edit-address' command."
