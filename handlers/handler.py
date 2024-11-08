@@ -138,7 +138,7 @@ def add_birthday(args, addressbook: AddressBook):
 @input_error
 def change_birthday(args, addressbook: AddressBook):
     if len(args) < 2:
-        raise ValueError("You must provide Name and Updated date of birth.")
+        raise ValueError("Error: You must provide both Name and Birthday.")
 
     name, new_birthday, *_ = args
 
@@ -162,11 +162,11 @@ def change_birthday(args, addressbook: AddressBook):
 @input_error
 def birthdays(addressbook):
     days_qty = input(Fore.LIGHTGREEN_EX + "Enter the number of days in which the birthday is to occur: " + Fore.YELLOW)
-    if not (re.match(r'\d+', days_qty) and days_qty != 0):
-        return Constants.NATURAL_NUMBER_ERROR.value
+    while not (days_qty.isdigit() and int(days_qty) < Constants.NUMBER_OF_DAYS_IN_THE_YEAR.value):
+        days_qty = input(Fore.LIGHTGREEN_EX + "Enter the NUMBER of days, not more than 366 days and no text: " + Fore.YELLOW)
 
     if len(addressbook) == 0:
-       return Constants.CONTACT_LIST_EMPTY.value
+       return Fore.RESET + Constants.CONTACT_LIST_EMPTY.value
 
     today = dt.today().date()
     result = []
@@ -187,9 +187,11 @@ def birthdays(addressbook):
             result.append(record)
 
     if not result:
-        return Constants.NO_NECESSARY_TO_CONGRATULATE.value
+        return Fore.RESET + Constants.NO_NECESSARY_TO_CONGRATULATE.value
         
     fields = ["Name", "Phones", "Address", "Email", "Birthday"]
+    print(Fore.RESET)
+
     return format_table(fields, result)
 
 @input_error
