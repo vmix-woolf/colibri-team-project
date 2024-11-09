@@ -1,20 +1,16 @@
 class Note:
-    """Клас для створення об'єкту записки"""
     def __init__(self, title, content):
         self.title = title
         self.content = content
-        self.tag = set()  # Порожня множина для тегів
+        self.tag = set()
 
     def __str__(self):
-        # Перевизначення методу str для красивого виведення
         return f"Title: {self.title}\nContent: {self.content}\nTags: {', '.join(self.tag) if self.tag else 'No tags'}"
 
     def add_tag(self, tag):
-        """Додавання тегу до нотатки"""
         self.tag.add(tag)
 
     def edit(self, title=None, content=None):
-        """Редагування нотатки"""
         if title:
             self.title = title
         if content:
@@ -33,4 +29,5 @@ class Note:
         """Конвертує словник в об'єкт Note"""
         note = Note(data['title'], data['content'])
         note.tag = set(data['tag'])  # Відновлюємо множину тегів
+
         return note
