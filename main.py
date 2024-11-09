@@ -32,8 +32,8 @@ command_completer = WordCompleter(COMMANDS, ignore_case=True)
 
 def main():
     addressbook = load_data()
-    notebook = Notebook()
     print(Constants.WELCOME_MESSAGE.value)
+    notebook = Notebook()
 
     while True:
         user_input = prompt("Enter a command: ", completer=command_completer)
