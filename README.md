@@ -21,53 +21,49 @@ Personal Assistant , implemented as commands in the command line interface, is u
 #### contacts and phones
 `add <contact_name> <phone_number>` - adds **contact name** and their **phone number**
 
-`change <contact_name> <phone_number>` - update **phone number** for the **contact**
+`remove <contact_name>` - remove **contact** by name
 
-`remove <contact_name>` - 
+`add-phone <contact_name> <phone_number>` - add **phone** to contact
 
-`add-phone <contact_name> <phone_number>` - 
+`edit-phone <contact_name> <old_phone_number> <new_phone_number>` - update **phone number** for the **contact**
 
-`change <contact_name> <old_phone> <new_phone>` -
+`remove-phone <contact_name> <phone_number>` - remove **phone** for contact
 
-`remove-phone <contact_name> <phone_number>` - 
-
-
-
-`all` - 
+`all` - show all contacts with names, phones, addresses, emails, birthdays
 #### emails
-`add-email <contact_name> <email>` - 
+`add-email <contact_name> <email>` - add **email** to contact
 
-`change-email <contact_name> <email>` -
+`change-email <contact_name> <email>` - replace **email** for contact
 
-`show-email <contact_name>` -
+`show-email <contact_name>` - display **email** for contact
 #### address
-`add-address <contact_name>` -
+`add-address <contact_name>` - add **address** for contact
 
-`change-address <contact_name>` - 
+`edit-address <contact_name>` - edit **address** for contact
 
-`remove-address <contact_name>` -
+`remove-address <contact_name>` - remove **address** for contact
 #### birthdays
-`add-birthday <contact_name> <bd_date>` - 
+`add-birthday <contact_name> <bd_date>` - add **birthday** for contact
 
-`change-birthday <contact_name> <refined_bd>` - 
+`edit-birthday <contact_name> <refined_bd>` - update **birthday** for contact 
 
-`remove-birthday <contact-name>` - 
+`remove-birthday <contact-name>` - remove **birthday** for contact
 
 `birthdays` -
 #### search
-`search-name <contact_name>` - 
+`search-name <contact_name>` - search **contact** by their name
 
-`search-email <email>` -
+`search-email <email>` - search **contact** by their email
 
-`search-birthday <db_date>` -
+`search-birthday <db_date>` - search **contact** by their birthday
 #### notes
 `add-note` - first use 'add-note' command, then write title and content of the th note
 
 `search-text <text>` - find note by word in the content
 
-`edit-note <number_key>` - edit note's title and content by it's id
+`edit-note <number_key>` - edit note's title and content by its id
 
-`remove-note <number_key>` - remove note by it's id 
+`remove-note <number_key>` - remove note by its id 
 
 `edit-note title <title>` - 
 
@@ -80,8 +76,8 @@ Personal Assistant , implemented as commands in the command line interface, is u
 
 `sort <#tag>` - sort notes by the given tag
 #### ai
-the is will be section on command's prompt
+there is such functionality that tells which commands the scheduler user can enter
 
-
+---
 `exit`, `quit`, `close`- exit program and good luck wishes!
 

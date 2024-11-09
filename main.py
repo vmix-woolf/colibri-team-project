@@ -22,9 +22,8 @@ COMMANDS = [
     "add-birthday", "edit-birthday", "remove-birthday",
     "add-address", "edit-address", "remove-address", "birthdays",
     "add-email", "edit-email", "remove-email", "show-email",
-    "search-name", "search-birthday", "search-email",  # Добавлена запятая
-    "all",  # Эта команда также добавлена
-    # Команды для работы с нотатками
+    "search-name", "search-birthday", "search-email",
+    "all",
     "add-note", "search-text", "edit-note", "remove-note",
     "add-tag", "search-tag", "sort-tag", "show-notes"
 ]
@@ -33,8 +32,8 @@ command_completer = WordCompleter(COMMANDS, ignore_case=True)
 
 def main():
     addressbook = load_data()
-    print(Constants.WELCOME_MESSAGE.value)
     notebook = Notebook()
+    print(Constants.WELCOME_MESSAGE.value)
 
     while True:
         user_input = prompt("Enter a command: ", completer=command_completer)
@@ -86,7 +85,6 @@ def main():
             print(format_contacts(search_by_email(args, addressbook), Constants.NO_CONTACTS_WITH_EMAIL.value))
         elif command == "all":
             print(format_contacts(addressbook,  Constants.NO_CONTACTS.value))
-        #Команди для роботи з нотатками
         elif command == "add-note":
             add_note(notebook)
         elif command == "search-text":

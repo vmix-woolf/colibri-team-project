@@ -10,7 +10,7 @@ class Notebook(UserDict):
     def __init__(self, filename="notes.pkl"):
         super().__init__()
         self.filename = filename
-        self.load_notes()  # Завантажуємо нотатки з файлу при ініціалізації
+        self.load_notes()
 
     def add_note(self, title, content):
         """Додавання нової нотатки"""
@@ -28,8 +28,8 @@ class Notebook(UserDict):
             for key, note in results.items():
                 table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
             print(table)
-        else:
-            print(Constants.NO_NOTES_FOUND.value)
+
+        print(Constants.NO_NOTES_FOUND.value)
 
     def edit_note(self, key, title=None, content=None):
         """Редагування нотатки за її номером"""
@@ -89,8 +89,7 @@ class Notebook(UserDict):
                 notes_data = pickle.load(f)
                 for key, note_data in notes_data.items():
                     self.data[int(key)] = Note.from_dict(note_data)
-        else:
-            print("Файл з нотатками не знайдено, створюємо новий порожній словник.")
+        print("Previous file not found, creating new one")
 
     def save_notes(self):
         """Зберігає нотатки у файл"""
