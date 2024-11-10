@@ -67,4 +67,7 @@ class Constants(Enum):
     TAG_ADDED_TO_NOTE = "Tag has been added."
     SEARCH_RESULTS = "Search results"
     NO_TITLE_AND_TAG = "Please provide title and tag."
-    
+    TAG_ALREADY_EXISTS = "Tag has already been added to the note."
+    TAG_DOES_NOT_EXIST = "Such tag does not exist."
+    TOO_MANY_RESULTS = "Too many results."
+    NO_TAG_GIVEN = "Please, provide a tag to look for!"

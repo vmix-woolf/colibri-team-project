@@ -18,6 +18,7 @@ from exceptions.exceptions import (
     EmailNotValidException
 )
 from helpers import format_table
+from prettytable import PrettyTable
 
 @input_error
 def format_contacts(contacts, error_message):
@@ -410,39 +411,89 @@ def add_note(notebook: Notebook):
     title = input("Enter the title of the note: ")
     content = input("Enter the content of the note: ")
     notebook.add_note(title, content)
+    return Constants.NOTE_ADDED.value
 
 def search_note(notebook: Notebook):
     # Пошук нотатки за текстом
     text = input("Enter text to search for: ")
-    notebook.search_text(text)
+    if text == "" or text == " ":
+        return Constants.TOO_MANY_RESULTS.value
+    result = notebook.search_text(text)
+
+    if isinstance(result, PrettyTable):
+        return result  # Виводимо таблицю
+    else:
+        return result  # Виводимо повідомлення (якщо не знайдено нотатки)
 
 @input_error
 def edit_note(notebook: Notebook, args):
     # Редагування нотатки за ключем
-    key = args[0]
+    if len(args) < 1:
+        raise ValueError("Error: You must provide both a title and content.")
+    
+    try:
+        key = int(args[0])  # Перевірка, чи є ключ числом
+    except ValueError:
+        raise ValueError("Error: The note key must be an integer.")
+    
+    note = notebook.data.get(key)
+    if not note:
+        return f"Note with key {key} not found."
+    
+    # Введення нових даних
     title = input("Enter new title (leave empty to keep current): ")
     content = input("Enter new content (leave empty to keep current): ")
-    notebook.edit_note(int(key), title or None, content or None)
+    if title != "" and content != "":
+        notebook.edit_note(int(key), title, content)
+        return f"Note with key {key} has been updated."
+    elif title != "":
+        notebook.edit_note(int(key), title, None)
+        return f"Note with key {key} has been updated."
+    elif content != "":
+        notebook.edit_note(int(key), None, content)
+        return f"Note with key {key} has been updated."
+    return "No changes."
 
 @input_error
 def remove_note(notebook: Notebook, args):
     # Видалення нотатки за ключем
     key = int(args[0])
+    
+    if key < 0 or key > len(notebook.data):
+        return Constants.NOTE_NOT_FOUND.value
     notebook.remove_note(key)
+    return Constants.NOTE_REMOVED.value
 
 def add_tag(notebook: Notebook, args):
         # Додавання тегу до нотатки
-    if len(args) == 2:
-        title = args[0]
-        tag = args[1]
-        notebook.add_tag_to_note(title, tag)
-    else:
+    if len(args) < 2:
         print(Constants.NO_TITLE_AND_TAG.value)
+        return
+
+    key, tag = args[0], args[1]
+
+    # Перевірка, чи є нотатка з таким ключем
+    note = notebook.data.get(int(key))  # Тут використовуємо ключ для доступу до нотатки
+
+    if not note:
+        return Constants.NOTE_NOT_FOUND.value
+
+    # Перевірка, чи є вже цей тег
+    if tag in note.tag:
+        return Constants.TAG_ALREADY_EXISTS.value
+    
+    # Додаємо тег
+    note.add_tag(tag)
+    notebook.save_notes()
+    return Constants.TAG_ADDED_TO_NOTE.value
 
 def search_tag(notebook: Notebook, args):
     # Пошук нотаток за тегом
+    if len(args) < 1:
+        return Constants.NO_TAG_GIVEN.value
     tag = args[0]
-    notebook.search_by_tag(tag)
+    result = notebook.search_by_tag(tag)
+    return result
 
 @input_error
 def sort_by_tag(notebook: Notebook, args):
@@ -452,7 +503,8 @@ def sort_by_tag(notebook: Notebook, args):
     notebook.sort_by_tag(tag) 
 
 def show_notes(notebook: Notebook):
-    notebook.show_all_notes()
+    result = notebook.show_all_notes()
+    return result
 
 @input_error
 def search_by_name(args, addressbook: AddressBook):
