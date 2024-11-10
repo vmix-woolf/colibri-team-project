@@ -36,5 +36,6 @@ class AddressBook(UserDict):
 
     def find_by_email(self, email):
         for _, record in self.data.items():
-            if record.email.value == email:
+            if record.email is not None and record.email.value == email:
                 return record
+        return None
