@@ -15,7 +15,6 @@ class Notebook(UserDict):
     def add_note(self, title, content):
         key = len(self.data) + 1  # unique key generation
         self.data[key] = Note(title, content)
-        print(Constants.NOTE_ADDED.value)
         self.save_notes()
 
     def search_text(self, text):
@@ -26,27 +25,25 @@ class Notebook(UserDict):
             table.field_names = ["Key", "Title", "Content", "Tags"]
             for key, note in results.items():
                 table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
-            print(table)
+            return table
         else:
-            print(Constants.NO_NOTES_FOUND.value)
+            return Constants.NO_NOTES_FOUND.value
 
     def edit_note(self, key, title=None, content=None):
         if key in self.data:
             self.data[key].edit(title, content)
-            print(Constants.NOTE_NUM_EDITED.value)
             self.save_notes()
         else:
-            print(f"No note found with number {key}.")
+            return(f"No note found with number {key}.")
 
     def remove_note(self, key):
         if key in self.data:
             del self.data[key]
             # key reallocation
             self.data = {i+1: note for i, (key, note) in enumerate(sorted(self.data.items()))}
-            print(Constants.NOTE_REMOVED.value)
             self.save_notes()
 
-        print(Constants.NOTE_NOT_FOUND.value)
+        return Constants.NOTE_NOT_FOUND.value
 
     def add_tag_to_note(self, title, tag):
         for note in self.data.values():
@@ -65,9 +62,9 @@ class Notebook(UserDict):
             table.field_names = ["Key", "Title", "Content", "Tags"]
             for key, note in results.items():
                 table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
-            print(table)
+            return table
         else:
-            print(Constants.NOTE_NOT_FOUND.value)
+            return Constants.TAG_DOES_NOT_EXIST.value
 
     def sort_by_tag(self, tag):
         sorted_notes = sorted(self.data.items(), key=lambda x: tag in x[1].tag)
@@ -76,7 +73,7 @@ class Notebook(UserDict):
 
         for key, note in sorted_notes:
             table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
-        print(table)
+        return table
 
     def load_notes(self):
         if os.path.exists(self.filename):
@@ -93,7 +90,7 @@ class Notebook(UserDict):
 
     def show_all_notes(self):
         if not self.data:
-            print(Constants.NO_NOTES_AVAILABLE.value)
+            return Constants.NO_NOTES_AVAILABLE.value
 
         table = PrettyTable()
         table.field_names = ["Key", "Title", "Content", "Tags"]
@@ -101,4 +98,4 @@ class Notebook(UserDict):
         for key, note in self.data.items():
             table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
 
-        print(table)
+        return table

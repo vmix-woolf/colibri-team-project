@@ -57,18 +57,20 @@ Personal Assistant , implemented as commands in the command line interface, is u
 
 `search-birthday <db_date>` - search **contact** by their birthday
 #### notes
-`add-note` - first use 'add-note' command, then write title and content of the th note
+`add-note` - add-note, provide title and content of the note
 
-`search-text <text>` - find note by word in the content
+`search-text <text>` - search **note** by text
 
 `edit-note <number_key>` - edit note's title and content by its id
 
 `remove-note <number_key>` - remove note by its id 
 
-#### additionally - tags
-`add-tag <title> <#tag>` - add a tag to a note with the given title
+`show-notes` - show all notes
 
-`search <#tag>` - search note by tag
+#### additionally - tags
+`add-tag <title> <#tag>` - add a tag to a **note** with the given title
+
+`search <#tag>` - search **note** by tag
 
 `sort <#tag>` - sort notes by the given tag
 #### ai

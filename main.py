@@ -86,21 +86,21 @@ def main():
         elif command == "all":
             print(format_contacts(addressbook,  Constants.NO_CONTACTS.value))
         elif command == "add-note":
-            add_note(notebook)
+            print(add_note(notebook))
         elif command == "search-text":
-            search_note(notebook)
+            print(search_note(notebook))
         elif command == "edit-note":
-            edit_note(notebook, args)
+            print(edit_note(notebook, args))
         elif command == "remove-note":
-            remove_note(notebook, args)
+            print(remove_note(notebook, args))
         elif command == "add-tag":
-            add_tag(notebook, args)
+            print(add_tag(notebook, args))
         elif command == "search-tag":
-            search_tag(notebook, args)
+            print(search_tag(notebook, args))
         elif command == "sort-tag":
-            sort_by_tag(notebook, args)
+            print(sort_by_tag(notebook, args))
         elif command == "show-notes":
-            show_notes(notebook)
+            print(show_notes(notebook))
         else:
             print(Constants.INVALID_COMMAND_ERROR.value)
 
