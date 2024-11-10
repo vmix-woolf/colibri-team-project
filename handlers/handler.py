@@ -13,9 +13,7 @@ from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
     NoSuchContactException, InvalidDateFormatException, InvalidDateValueException,
-    EmailIsAlreadyBelongToAnotherException,
-    EmailIsAlreadyBelongToAnotherException,
-    EmailNotValidException
+    EmailIsAlreadyBelongToAnotherException, EmailNotValidException
 )
 from helpers import format_table
 from prettytable import PrettyTable
