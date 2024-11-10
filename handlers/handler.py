@@ -1,5 +1,6 @@
 from colorama import Fore
 from datetime import datetime as dt
+
 from assistant.addressbook import AddressBook
 from assistant.birthday import Birthday
 from assistant.address import Address
@@ -28,6 +29,8 @@ def format_contacts(contacts: AddressBook, error_message):
 
     if isinstance(contacts, Record):
         records_list = [contacts]
+    elif isinstance(contacts, list):
+        records_list = contacts
     else:
         records_list = list(contacts.values())
 
@@ -63,6 +66,7 @@ def add_contact(args, addressbook):
         record.add_phone(phone)
         return Constants.CONTACT_ADDED.value
 
+@input_error
 def remove_contact(args, book: AddressBook):
     if len(args) < 1:
         raise ValueError("You must provide Name")
@@ -430,7 +434,7 @@ def search_note(notebook: Notebook):
 def edit_note(notebook: Notebook, args):
     # Редагування нотатки за ключем
     if len(args) < 1:
-        raise ValueError("Error: please provide key of the note.")
+        raise ValueError("Error: please provide note KEY number.")
     
     try:
         key = int(args[0])  # Перевірка, чи є ключ числом
