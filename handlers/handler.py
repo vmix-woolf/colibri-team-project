@@ -13,22 +13,23 @@ from messages.constants import Constants
 from exceptions.exceptions import (
     InvalidNameException, PhoneNumberException, PhoneIsAlreadyBelongingException,
     NoSuchContactException, InvalidDateFormatException, InvalidDateValueException,
-    EmailIsAlreadyBelongToAnotherException,
-    EmailIsAlreadyBelongToAnotherException,
-    EmailNotValidException
+    EmailIsAlreadyBelongToAnotherException, EmailNotValidException
 )
 from helpers import format_table
 
 @input_error
-def format_contacts(contacts, error_message):
+def format_contacts(contacts: AddressBook, error_message):
     if contacts is None:
         return error_message
+
     if isinstance(contacts, str):
         return contacts
+
     if isinstance(contacts, Record):
         records_list = [contacts]
     else:
-        records_list = list(contacts)
+        records_list = list(contacts.values())
+
     if len(records_list) == 0:
         return error_message
     else:

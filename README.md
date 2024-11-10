@@ -65,10 +65,6 @@ Personal Assistant , implemented as commands in the command line interface, is u
 
 `remove-note <number_key>` - remove note by its id 
 
-`edit-note title <title>` - 
-
-`remove-note title <title>` - 
-
 #### additionally - tags
 `add-tag <title> <#tag>` - add a tag to a note with the given title
 
