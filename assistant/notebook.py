@@ -64,7 +64,7 @@ class Notebook(UserDict):
                 table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
             return table
         else:
-            return Constants.NOTE_NOT_FOUND.value
+            return Constants.TAG_DOES_NOT_EXIST.value
 
     def sort_by_tag(self, tag):
         sorted_notes = sorted(self.data.items(), key=lambda x: tag in x[1].tag)
@@ -73,7 +73,7 @@ class Notebook(UserDict):
 
         for key, note in sorted_notes:
             table.add_row([key, note.title, note.content, ", ".join(note.tag) if note.tag else "No tags"])
-        print(table)
+        return table
 
     def load_notes(self):
         if os.path.exists(self.filename):

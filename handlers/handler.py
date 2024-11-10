@@ -432,7 +432,7 @@ def search_note(notebook: Notebook):
 def edit_note(notebook: Notebook, args):
     # Редагування нотатки за ключем
     if len(args) < 1:
-        raise ValueError("Error: You must provide both a title and content.")
+        raise ValueError("Error: please provide key of the note.")
     
     try:
         key = int(args[0])  # Перевірка, чи є ключ числом
@@ -460,6 +460,13 @@ def edit_note(notebook: Notebook, args):
 @input_error
 def remove_note(notebook: Notebook, args):
     # Видалення нотатки за ключем
+    if len(args) < 1:
+        return Constants.NO_KEY_GIVEN.value
+    
+    key = args[0]
+    if key.isalpha():
+        return "Error: The note key must be an integer."
+    
     key = int(args[0])
     
     if key < 0 or key > len(notebook.data):
@@ -503,7 +510,8 @@ def sort_by_tag(notebook: Notebook, args):
     # Сортування нотаток за тегом
 
     tag = args[0]
-    notebook.sort_by_tag(tag) 
+    result = notebook.sort_by_tag(tag)
+    return result
 
 def show_notes(notebook: Notebook):
     result = notebook.show_all_notes()

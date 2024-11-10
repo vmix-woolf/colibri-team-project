@@ -71,3 +71,4 @@ class Constants(Enum):
     TAG_DOES_NOT_EXIST = "Such tag does not exist."
     TOO_MANY_RESULTS = "Too many results."
     NO_TAG_GIVEN = "Please, provide a tag to look for!"
+    NO_KEY_GIVEN = "You need to provide key for the note you want to remove!"
