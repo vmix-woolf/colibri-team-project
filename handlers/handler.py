@@ -1,3 +1,5 @@
+import calendar
+
 from colorama import Fore
 from datetime import datetime as dt
 
@@ -193,6 +195,7 @@ def change_birthday(args, addressbook: AddressBook):
 @input_error
 def birthdays(addressbook):
     days_qty = input(Fore.LIGHTGREEN_EX + "Enter the number of days in which the birthday is to occur: " + Fore.YELLOW)
+
     while not (days_qty.isdigit() and int(days_qty) < Constants.NUMBER_OF_DAYS_IN_THE_YEAR.value):
         days_qty = input(Fore.LIGHTGREEN_EX + "Enter the NUMBER of days, not more than 366 days and no text: " + Fore.YELLOW)
 
@@ -211,8 +214,11 @@ def birthdays(addressbook):
 
         # Adjust to next year if the birthday this year has passed
         if next_birthday < today:
-            next_birthday = next_birthday.replace(year=today.year + 1)
-
+            next_year = next_birthday.year + 1
+            if calendar.isleap(next_year):
+                next_birthday = next_birthday.replace(year=next_year)
+            else:
+                next_birthday = next_birthday.replace(month=2, day=28, year=next_year)
         # Check if the birthday falls within the specified days
         if (next_birthday - today).days <= int(days_qty):
             result.append(record)
